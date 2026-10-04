@@ -1,6 +1,6 @@
 # NSCOM03 Mock Midterms Exam
 
-A self-contained mock midterms exam and practice quizzes for NSCOM03. Open `NSCOM03-mock-midterms-exam.html` in any browser, no install needed.
+Mock midterms exam and practice quizzes for NSCOM03. Open `NSCOM03-mock-midterms-exam.html` in any browser.
 
 Also linked: [Line Encoding Diagrams & Additional Notes (Miro board)](https://miro.com/app/board/uXjVEekzuEo=/?share_link_id=209019946829)
 
@@ -20,4 +20,6 @@ sources/
 
 Once they're in place, each question's citation link opens the exact slide page it came from. Without them, the exam still works, but the citation links won't open anything.
 
-Please don't open a PR that adds the slides. `.gitignore` already keeps them out.
+Please don't open a PR that adds the slides. 
+
+Goodluck on the exams! :)
