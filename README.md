@@ -4,6 +4,14 @@ Mock midterms exam and practice quizzes for NSCOM03. Open `NSCOM03-mock-midterms
 
 Also linked: [Line Encoding Diagrams & Additional Notes (Miro board)](https://miro.com/app/board/uXjVEekzuEo=/?share_link_id=209019946829)
 
+## Screenshots
+
+| Home | Section order |
+| --- | --- |
+| ![Home](screenshots/home.png) | ![Section order](screenshots/order.png) |
+| **Question** | **Results** |
+| ![Question](screenshots/question.png) | ![Results](screenshots/results.png) |
+
 ## The lecture slides are not included
 
 The questions are based on the course slides, but the slides belong to the instructor and aren't mine to redistribute, so the `sources/` folder in this repo is empty.
