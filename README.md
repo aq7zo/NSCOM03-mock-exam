@@ -2,7 +2,7 @@
 
 Mock midterms exam and practice quizzes for NSCOM03. Open `NSCOM03-mock-midterms-exam.html` in any browser, or try it online at **https://aq7zo.github.io/NSCOM03-mock-exam/**.
 
-Also linked: [Line Encoding Diagrams & Additional Notes (Miro board)](https://miro.com/app/board/uXjVEekzuEo=/?share_link_id=209019946829)
+Also linked: [Line Encoding Diagrams & Additional Notes (Miro board)](https://miro.com/app/board/uXjVEekzuEo=/?share_link_id=209019946829) Status: Work-In-Progress
 
 ## Screenshots
 
