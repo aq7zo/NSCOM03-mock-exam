@@ -1061,7 +1061,7 @@ a:hover { color: var(--c-accent-strong); }
   </div>
 </main>
 
-<footer class="footer">NSCOM03 Mock Midterms Exam · version 1 · generated 2026-10-02 · built only from the files in sources/</footer>
+<footer class="footer">NSCOM03 Mock Midterms Exam · version 1 · generated 2026-10-02 · built only from the files in sources/<br>Made by Enzo Campo with <a href="https://github.com/aq7zo/mock-exam-builder" target="_blank" rel="noopener">mock-exam-builder</a>. Want to build one for your own class? The skill is free on GitHub. If this helped you, a ⭐ on the repo is appreciated! :)</footer>
 
 <dialog id="dialog" class="dialog" aria-labelledby="dialog-title"></dialog>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
@@ -5364,6 +5364,8 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
   };
 
   /* ── 11. Sources ────────────────────────────────────────────────────── */
+  // Served from a web host (e.g. GitHub Pages): the slides aren't published next to the page.
+  var hosted = location.protocol !== 'file:';
   function sourceHref(file, page, excerpt) {
     var t = typeOf(file), href = 'sources/' + encodeURIComponent(file);
     if (t === 'pdf' && page) href += '#page=' + page + (excerpt ? '&search=' + encodeURIComponent(String(excerpt).split(/\s+/).slice(0, 6).join(' ')) : '');
@@ -5395,6 +5397,15 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
     var h = '<div class="page stack stack--lg">';
     h += pageHead('', 'Browse sources', 'Every question comes from these files in <span class="strong">sources/</span>.',
       ui.back ? '<button class="btn btn--primary btn--sm" data-action="back">' + icon('arrow-left', 'icon--sm') + ui.back.label + '</button>' : '<button class="btn btn--sm btn--ghost" data-action="home">' + icon('arrow-left', 'icon--sm') + 'Home</button>');
+    if (hosted) {
+      var self = M.class_code + '-mock-' + M.term + '-exam.html';
+      h += callout('neutral', 'info', 'The original slides aren’t hosted here',
+        '<div class="stack stack--sm"><p>The lecture slides belong to the instructor, so they aren’t posted online with this exam. The cited passages are still shown below; only the “Open original file” links are turned off.</p>' +
+        '<p>If you’re in the same NSCOM03 class, download this page, put it in a folder, and add a <span class="strong">sources/</span> folder next to it with these files from your course page:</p>' +
+        '<ul>' + SOURCES.map(function (s) { return '<li>' + esc(s.file) + '</li>'; }).join('') + '</ul>' +
+        '<p>Open the downloaded file from your computer, and every citation will open the exact page in the original PDF.</p></div>',
+        '<a class="btn btn--sm" href="' + esc(self) + '" download>' + icon('download', 'icon--sm') + 'Download this exam</a>');
+    }
     h += '<div class="split split--wide-side"><aside class="sidebar" aria-label="Files in sources"><span class="eyebrow">' + icon('folder', 'icon--sm') + ' sources/</span><ul class="file-list">';
     SOURCES.forEach(function (s) {
       var t = typeOf(s.file), cur = s.file === file;
@@ -5409,7 +5420,7 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
     var feeds = (src.topics || []).map(function (tid) { return TOPIC[tid] ? TOPIC[tid].name : tid; });
     h += '<div class="viewer__head"><span class="file__icon" data-type="' + typeOf(file) + '">' + icon('file-' + typeOf(file), 'icon--lg') + '</span><div class="grow stack stack--xs"><h2 class="truncate">' + esc(file) + '</h2>' +
       '<span class="small muted">' + (feeds.length ? 'Feeds: ' + esc(feeds.join(', ')) : '') + (src.pages ? ' · ' + src.pages + ' ' + (typeOf(file) === 'pptx' ? 'slides' : typeOf(file) === 'pdf' ? 'pages' : 'sections') : '') + '</span></div>' +
-      '<a class="btn btn--sm" href="' + esc(sourceHref(file, page, p.excerpt)) + '" target="_blank" rel="noopener">' + icon('external', 'icon--sm') + esc(openLabel(file, page)) + '</a></div>';
+      (hosted ? '' : '<a class="btn btn--sm" href="' + esc(sourceHref(file, page, p.excerpt)) + '" target="_blank" rel="noopener">' + icon('external', 'icon--sm') + esc(openLabel(file, page)) + '</a>') + '</div>';
     if (locked) {
       h += callout('warning', 'alert', 'Page text is hidden during a mock exam', 'Submit or discard your in-progress mock exam to read the sources. You can still see which files feed which topics.');
     } else if (page == null || !pages()[file] || pages()[file][page] == null) {
