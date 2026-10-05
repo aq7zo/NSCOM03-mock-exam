@@ -13,6 +13,8 @@ Also linked: [Line Encoding Diagrams & Additional Notes (Miro board)](https://mi
 | ![Home](screenshots/home.png) | ![Section order](screenshots/order.png) |
 | **Question** | **Results** |
 | ![Question](screenshots/question.png) | ![Results](screenshots/results.png) |
+| **Practice by topic** | **Formula sheet & examples** |
+| ![Practice by topic](screenshots/practice.png) | ![Formula sheet & examples](screenshots/formulas.png) |
 
 ## The lecture slides are not included
 
