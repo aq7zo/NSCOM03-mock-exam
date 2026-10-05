@@ -5224,7 +5224,7 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
   VIEWS.picker = function () {
     var mm = masteryMap(), seen = attemptedIds(), last = store.attempts[store.attempts.length - 1];
     var h = '<div class="page stack stack--xl">';
-    h += pageHead('', 'Practice by topic', 'Instant feedback after every question. Practice results never change your mastery; only mock exams do.', BACK_BTN);
+    h += pageHead('', 'Practice by topic', 'Instant feedback after every question.', BACK_BTN);
     h += '<div class="cluster"><span class="small strong">Questions per session</span><div class="segmented" role="radiogroup" aria-label="Session length">' +
       [['10', '10'], ['20', '20'], ['all', 'All']].map(function (o) { return '<span class="segmented__option"><input type="radio" id="len-' + o[0] + '" name="plen" value="' + o[0] + '" data-action="plen"' + (ui.practiceLen === o[0] ? ' checked' : '') + '><label class="segmented__label" for="len-' + o[0] + '">' + o[1] + '</label></span>'; }).join('') + '</div></div>';
 
