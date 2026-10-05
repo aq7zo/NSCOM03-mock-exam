@@ -2,6 +2,8 @@
 
 Mock midterms exam and practice quizzes for NSCOM03. Open `NSCOM03-mock-midterms-exam.html` in any browser, or try it online at **https://aq7zo.github.io/NSCOM03-mock-exam/**.
 
+Also included: `NSCOM03 Physical Layer Formulas.html`, a formula sheet with worked examples ([view online](https://aq7zo.github.io/NSCOM03-mock-exam/NSCOM03%20Physical%20Layer%20Formulas.html)). It's also a card on the exam's home screen.
+
 Also linked: [Line Encoding Diagrams & Additional Notes (Miro board)](https://miro.com/app/board/uXjVEekzuEo=/?share_link_id=209019946829) Status: Work-In-Progress
 
 ## Screenshots

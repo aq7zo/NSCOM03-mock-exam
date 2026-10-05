@@ -387,6 +387,7 @@ a:hover { color: var(--c-accent-strong); }
 .section-head { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--sp-2) var(--sp-4); }
 .section-head__text { flex: 1 1 var(--w-flex-lg); min-width: 0; display: flex; flex-direction: column; gap: var(--sp-1); }
 .section-head__desc { color: var(--c-ink-2); font-size: var(--fs-sm); }
+.section-head__title { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-2) var(--sp-4); }
 
 .eyebrow {
   font-size: var(--fs-xs); font-weight: var(--fw-semibold); color: var(--c-ink-3);
@@ -511,6 +512,7 @@ a:hover { color: var(--c-accent-strong); }
 
 /* Entry cards on the home screen */
 .entry { gap: var(--sp-2); }
+a.card { color: inherit; text-decoration: none; }
 
 /* 6 ─ Badges & mastery bands ───────────────────────────────────────────── */
 .badge {
@@ -4741,9 +4743,10 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
   }
   function pageHead(eyebrow, title, desc, actions) {
     return '<div class="section-head"><div class="section-head__text">' + (eyebrow ? '<span class="eyebrow">' + eyebrow + '</span>' : '') +
-      '<h1>' + title + '</h1>' + (desc ? '<p class="section-head__desc">' + desc + '</p>' : '') + '</div>' +
-      (actions ? '<div class="cluster no-print">' + actions + '</div>' : '') + '</div>';
+      (actions ? '<div class="section-head__title"><h1>' + title + '</h1><div class="cluster no-print">' + actions + '</div></div>' : '<h1>' + title + '</h1>') +
+      (desc ? '<p class="section-head__desc">' + desc + '</p>' : '') + '</div></div>';
   }
+  var BACK_BTN = '<button class="btn btn--sm btn--ghost" data-action="home">' + icon('arrow-left', 'icon--sm') + 'Back</button>';
   function sectionHead(title, desc, actions) {
     return '<div class="section-head"><div class="section-head__text"><h2>' + title + '</h2>' + (desc ? '<p class="section-head__desc">' + desc + '</p>' : '') + '</div>' +
       (actions ? '<div class="cluster no-print">' + actions + '</div>' : '') + '</div>';
@@ -4781,11 +4784,13 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
     var last = M.changelog && M.changelog.length ? M.changelog[M.changelog.length - 1] : null;
     if (M.version > 1 && last) h += callout('neutral', 'history', 'New in version ' + esc(last.version), esc(last.summary));
 
-    h += '<div class="grid grid--3">';
+    h += '<div class="grid grid--4">';
     h += '<button class="card card--interactive card--accent entry" data-action="' + (run ? 'resume' : 'start-order') + '"><span class="card__title">' + (run ? 'Resume mock exam' : 'Mock exam') + '</span>' +
       '<span class="card__desc">' + M.exam_length + ' items across ' + plural(TOPICS.length, 'topic') + '. Answers are revealed only after you submit. This is what measures mastery.</span></button>';
     h += '<button class="card card--interactive entry" data-action="picker"><span class="card__title">Practice by topic</span>' +
       '<span class="card__desc">One topic at a time with instant feedback, weakest areas first.</span></button>';
+    h += '<a class="card card--interactive entry" href="NSCOM03%20Physical%20Layer%20Formulas.html"><span class="card__title">Formula sheet &amp; examples</span>' +
+      '<span class="card__desc">Physical layer formulas with worked examples, from Nyquist and Shannon to latency.</span></a>';
     h += '<button class="card card--interactive entry" data-action="sources"><span class="card__title">Browse sources</span>' +
       '<span class="card__desc">' + plural(SOURCES.length, 'file') + ' in <span class="strong">sources/</span>. Every question links to the exact page it came from.</span></button>';
     h += '</div>';
@@ -4831,7 +4836,7 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
     var which = cur === rec && hasAttempts ? 'Recommended order (weakest first)' : cur === courseOrder().join() ? 'Course order' : 'Custom order';
     var h = '<div class="page page--read stack stack--lg">';
     h += pageHead('Mock exam · step 1 of 2', 'Choose your section order',
-      'Drag the sections, or use the arrows. ' + M.exam_length + ' items' + (M.timer_minutes ? ' · ' + M.timer_minutes + '-minute timer' : ' · untimed') + '. Answers are revealed after you submit.');
+      'Drag the sections, or use the arrows. ' + M.exam_length + ' items' + (M.timer_minutes ? ' · ' + M.timer_minutes + '-minute timer' : ' · untimed') + '. Answers are revealed after you submit.', BACK_BTN);
     h += hasAttempts ? callout('', 'info', 'Weakest topics first is recommended', 'Based on your latest mock exam, topics are ordered weakest to strongest; topics you haven’t attempted come right after the weak ones.')
       : callout('neutral', 'info', 'Course order', 'After your first mock exam, a recommended order (weakest topics first) will appear here.');
     h += '<div class="cluster cluster--between"><span class="small muted">Using: <span class="strong">' + which + '</span></span><div class="cluster">' +
@@ -4846,8 +4851,7 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
         '<button class="btn btn--icon btn--sm" data-action="move" data-topic="' + esc(tid) + '" data-dir="1" aria-label="Move ' + esc(t.name) + ' down"' + (i === ui.order.length - 1 ? ' disabled' : '') + '>' + icon('chevron-down', 'icon--sm') + '</button></span></li>';
     });
     h += '</ol>';
-    h += '<label class="check"><input type="checkbox" data-action="shuffle-within"' + (ui.shuffleWithin ? ' checked' : '') + '>Shuffle questions within each section</label>';
-    h += '<div class="cluster cluster--between"><button class="btn btn--ghost" data-action="home">' + icon('arrow-left', 'icon--sm') + 'Back</button>' +
+    h += '<div class="cluster cluster--between"><label class="check"><input type="checkbox" data-action="shuffle-within"' + (ui.shuffleWithin ? ' checked' : '') + '>Shuffle questions within each section</label>' +
       '<button class="btn btn--primary btn--lg" data-action="start-exam">' + icon('play', 'icon--sm') + 'Start mock exam</button></div></div>';
     return h;
   };
@@ -5125,11 +5129,11 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
   }
   VIEWS.results = function (p) {
     var a = store.attempts.filter(function (x) { return x.id === p.id; })[0];
-    if (!a) return '<div class="page">' + callout('danger', 'alert', 'Attempt not found', 'It may have been removed when browser data was cleared.', '<button class="btn btn--sm" data-action="home">Home</button>') + '</div>';
+    if (!a) return '<div class="page">' + callout('danger', 'alert', 'Attempt not found', 'It may have been removed when browser data was cleared.', '<button class="btn btn--sm" data-action="home">Back</button>') + '</div>';
     var A = analyze(a), band = bandOf(A.p);
     var h = '<div class="page stack stack--xl">';
     h += pageHead('Mock exam results · attempt ' + A.n, esc(fmtDate(a.date, true)), 'Mastery below is updated from this attempt.',
-      '<button class="btn btn--sm" data-action="print">' + icon('print', 'icon--sm') + 'Print / Save PDF</button><button class="btn btn--sm btn--primary" data-action="retake">' + icon('target', 'icon--sm') + 'Retake with recommended order</button>');
+      BACK_BTN + '<button class="btn btn--sm" data-action="print">' + icon('print', 'icon--sm') + 'Print / Save PDF</button><button class="btn btn--sm btn--primary" data-action="retake">' + icon('target', 'icon--sm') + 'Retake with recommended order</button>');
 
     h += '<div class="score-hero"><div class="stack stack--sm"><span class="score-hero__value">' + A.p + '%</span>' + bandPill(band) + '</div><div class="stack">' +
       '<p class="score-hero__caption">' + A.correct + ' of ' + A.total + ' correct' + (A.prevP != null ? ' · ' + trendHTML(A.p, A.prevP) + ' vs previous mock exam (' + A.prevP + '%)' : ' · your first mock exam') + '</p>' +
@@ -5203,7 +5207,7 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
     });
     if (!shown) h += '<div class="empty"><span class="empty__title">No ' + (ui.filter === 'low' ? 'guessed' : ui.filter) + ' questions in this attempt</span><button type="button" class="btn btn--sm" data-action="filter" data-filter="all">Show all ' + counts.all + '</button></div>';
     h += '</div></section>';
-    h += '<div class="cluster cluster--between no-print"><button class="btn btn--ghost" data-action="home">' + icon('arrow-left', 'icon--sm') + 'Home</button><button class="btn btn--primary" data-action="retake">' + icon('target', 'icon--sm') + 'Retake with recommended order</button></div>';
+    h += '<div class="cluster cluster--between no-print"><button class="btn btn--ghost" data-action="home">' + icon('arrow-left', 'icon--sm') + 'Back</button><button class="btn btn--primary" data-action="retake">' + icon('target', 'icon--sm') + 'Retake with recommended order</button></div>';
     h += '</div>';
     return h;
   };
@@ -5219,7 +5223,7 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
   VIEWS.picker = function () {
     var mm = masteryMap(), seen = attemptedIds(), last = store.attempts[store.attempts.length - 1];
     var h = '<div class="page stack stack--xl">';
-    h += pageHead('', 'Practice by topic', 'Instant feedback after every question. Practice results never change your mastery; only mock exams do.');
+    h += pageHead('', 'Practice by topic', 'Instant feedback after every question. Practice results never change your mastery; only mock exams do.', BACK_BTN);
     h += '<div class="cluster"><span class="small strong">Questions per session</span><div class="segmented" role="radiogroup" aria-label="Session length">' +
       [['10', '10'], ['20', '20'], ['all', 'All']].map(function (o) { return '<span class="segmented__option"><input type="radio" id="len-' + o[0] + '" name="plen" value="' + o[0] + '" data-action="plen"' + (ui.practiceLen === o[0] ? ' checked' : '') + '><label class="segmented__label" for="len-' + o[0] + '">' + o[1] + '</label></span>'; }).join('') + '</div></div>';
 
@@ -5345,7 +5349,7 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
     var missed = first.filter(function (x) { return x.state !== 'correct'; });
     var p = pct(right, first.length);
     var h = '<div class="page page--read stack stack--lg">';
-    h += pageHead('Practice · ' + practiceTitle(P), 'Session summary', '');
+    h += pageHead('Practice · ' + practiceTitle(P), 'Session summary', '', BACK_BTN);
     h += callout('neutral', 'info', 'Practice results — doesn’t affect mastery.', 'Take a mock exam to update your mastery.');
     h += '<div class="stat-grid"><div class="stat"><span class="stat__label">First try</span><span class="stat__value">' + p + '<span class="stat__unit">%</span></span><span class="stat__foot">' + right + ' of ' + first.length + ' correct</span></div>' +
       '<div class="stat"><span class="stat__label">Second try</span><span class="stat__value">' + fixed + '<span class="stat__unit">/' + retries.length + '</span></span><span class="stat__foot">fixed on retry</span></div></div>';
@@ -5396,7 +5400,7 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
     var page = p.page != null ? Number(p.page) : (src.cited_pages && src.cited_pages[0]) || avail[0];
     var h = '<div class="page stack stack--lg">';
     h += pageHead('', 'Browse sources', 'Every question comes from these files in <span class="strong">sources/</span>.',
-      ui.back ? '<button class="btn btn--primary btn--sm" data-action="back">' + icon('arrow-left', 'icon--sm') + ui.back.label + '</button>' : '<button class="btn btn--sm btn--ghost" data-action="home">' + icon('arrow-left', 'icon--sm') + 'Home</button>');
+      ui.back ? '<button class="btn btn--primary btn--sm" data-action="back">' + icon('arrow-left', 'icon--sm') + ui.back.label + '</button>' : BACK_BTN);
     if (hosted) {
       var self = M.class_code + '-mock-' + M.term + '-exam.html';
       h += callout('neutral', 'info', 'The original slides aren’t hosted here',
