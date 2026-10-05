@@ -12,6 +12,26 @@
 .deck-pick select:hover { border-color: var(--c-accent); }
 .deck-pick option { background: var(--c-surface); color: var(--c-ink); }
 .deck-pick .icon { position: absolute; inset-inline-end: var(--sp-2); top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--c-ink-2); }
+
+/* Formula nav: muted jump list for the current deck, docked left of the content on wide screens */
+.formula-nav { display: none; }
+/* Three columns with equal side tracks, so the content stays centred and the nav sits in the left margin */
+@media (min-width: 76rem) {
+  .with-nav { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, calc(50rem + 2 * var(--gutter-wide))) minmax(0, 1fr); }
+  .with-nav > .page { grid-column: 2; grid-row: 1; margin-inline: 0; }
+  .formula-nav {
+    grid-column: 1; grid-row: 1; justify-self: end; width: 10.5rem;
+    display: flex; flex-direction: column; gap: var(--sp-2); align-self: start;
+    position: sticky; top: calc(var(--h-topbar) + var(--sp-6));
+    max-height: calc(100vh - var(--h-topbar) - var(--sp-10)); overflow-y: auto;
+  }
+}
+.formula-nav ul { list-style: none; display: flex; flex-direction: column; border-inline-start: var(--bw-1) solid var(--c-border); }
+.formula-nav a {
+  display: block; padding: var(--sp-1) var(--sp-3); margin-inline-start: calc(-1 * var(--bw-1));
+  border-inline-start: var(--bw-1) solid transparent; color: var(--c-ink-3); font-size: var(--fs-sm); line-height: var(--lh-snug); text-decoration: none;
+}
+.formula-nav a:hover { color: var(--c-ink-2); border-inline-start-color: var(--c-border-strong); }
 </style></head><body>
 <title>NSCOM03 Physical Layer Formulas</title>
 <style>
@@ -1059,6 +1079,8 @@ a:hover { color: var(--c-accent-strong); }
 </header>
 
 <main class="main" id="top">
+<div class="with-nav">
+<nav class="formula-nav" aria-label="Formulas"><p class="eyebrow">Formulas</p><ul id="formula-nav"></ul></nav>
 <div class="page stack stack--xl" style="max-width: calc(50rem + 2 * var(--gutter-wide))">
 
   <div class="section-head">
@@ -1079,7 +1101,7 @@ a:hover { color: var(--c-accent-strong); }
     <a class="btn btn--sm" id="open-source" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-external"/></svg>Open original file</a></div>
 
   <div class="deck stack stack--xl" id="d02">
-  <section class="section">
+  <section class="section" id="ref-d02">
     <div class="section-head"><div class="section-head__text"><h2>Quick reference</h2></div></div>
     <div class="table-wrap">
       <table class="table">
@@ -1114,7 +1136,7 @@ a:hover { color: var(--c-accent-strong); }
   </section>
 
 <section class="section" id="freq">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Frequency and period</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=6" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slides 6–7</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>Frequency and period</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=6" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slides 6–7</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[f = \frac{1}{T} \qquad T = \frac{1}{f}\]</div><ul class="vars"><li><b>f</b> frequency in Hz (cycles per second)</li><li><b>T</b> period in seconds (time for one cycle)</li></ul></div><div class="tri" data-t="1" data-l="f" data-r="T"></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 1</span></div>
@@ -1139,7 +1161,7 @@ a:hover { color: var(--c-accent-strong); }
 </section>
 
 <section class="section" id="wave">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Wavelength</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=9" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slides 9–10</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>Wavelength</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=9" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slides 9–10</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[\lambda = \frac{c}{f}\]</div><p class="formula__alt">equivalently \(\lambda = c \cdot T\)</p><ul class="vars"><li><b>λ</b> wavelength in metres</li><li><b>c</b> propagation speed (3 × 10⁸ m/s in free space)</li><li><b>f</b> frequency in Hz</li></ul></div><div class="tri" data-t="c" data-l="λ" data-r="f"></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 3</span></div>
@@ -1164,7 +1186,7 @@ a:hover { color: var(--c-accent-strong); }
 </section>
 
 <section class="section" id="bw">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Bandwidth (in Hertz)</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=13" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slide 13</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>Bandwidth (in Hertz)</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=13" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slide 13</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[B = f_{\text{high}} - f_{\text{low}}\]</div><ul class="vars"><li><b>B</b> range of frequencies in a composite signal or channel</li></ul></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 5</span></div>
@@ -1189,7 +1211,7 @@ a:hover { color: var(--c-accent-strong); }
 </section>
 
 <section class="section" id="levels">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Bits per signal level</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=14" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slide 14</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>Bits per signal level</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=14" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slide 14</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[n = \log_2 L \quad\iff\quad L = 2^{n}\]</div><ul class="vars"><li><b>L</b> number of signal levels</li><li><b>n</b> bits carried by each level</li></ul></div><div class="tri" data-t="L" data-l="2" data-r="n" data-cap="log shape: base bottom-left, exponent bottom-right"></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 7</span></div>
@@ -1214,7 +1236,7 @@ a:hover { color: var(--c-accent-strong); }
 </section>
 
 <section class="section" id="bitlen">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Bit duration and bit length</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=14" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slide 14</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>Bit duration and bit length</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=14" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slide 14</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[t_{\text{bit}} = \frac{1}{R} \qquad \ell_{\text{bit}} = v \cdot t_{\text{bit}}\]</div><ul class="vars"><li><b>R</b> bit rate in bps</li><li><b>v</b> propagation speed of the medium</li></ul></div><div class="tri" data-t="len" data-l="v" data-r="t" data-cap="bit length = v × t_bit"></div></div><p class="small muted">The slide defines bit rate (bits sent in 1 s) and bit length (distance one bit occupies) in words; these are the formulas behind those definitions.</p></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 9</span></div>
@@ -1239,7 +1261,7 @@ a:hover { color: var(--c-accent-strong); }
 </section>
 
 <section class="section" id="db">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Decibel (attenuation and gain)</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=20" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slides 20–22</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>Decibel (attenuation and gain)</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=20" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slides 20–22</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[\text{dB} = 10\log_{10}\!\left(\frac{P_2}{P_1}\right)\]</div><ul class="vars"><li><b>P₁</b> power at point 1 (start)</li><li><b>P₂</b> power at point 2 (end)</li><li><b>±</b> negative = attenuated, positive = amplified; dB values along a path add up</li></ul></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 11</span></div>
@@ -1264,7 +1286,7 @@ a:hover { color: var(--c-accent-strong); }
 </section>
 
 <section class="section" id="snr">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Signal-to-noise ratio</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=25" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slides 25–26</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>Signal-to-noise ratio</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=25" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slides 25–26</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[\text{SNR} = \frac{P_{\text{signal}}}{P_{\text{noise}}} \qquad \text{SNR}_{\text{dB}} = 10\log_{10}\text{SNR}\]</div><p class="formula__alt">reverse: \(\text{SNR} = 10^{\,\text{SNR}_{\text{dB}}/10}\)</p><ul class="vars"><li><b>SNR</b> high = clean signal, low = noisy signal; convert both powers to the same unit first</li></ul></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 13</span></div>
@@ -1289,7 +1311,7 @@ a:hover { color: var(--c-accent-strong); }
 </section>
 
 <section class="section" id="nyq">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Nyquist bit rate (noiseless)</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=29" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slides 29–30</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>Nyquist bit rate (noiseless)</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=29" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slides 29–30</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[\text{BitRate} = 2B\log_2 L\]</div><p class="formula__alt">solve for levels: \(L = 2^{\,\text{BitRate}/2B}\)</p><ul class="vars"><li><b>B</b> channel bandwidth in Hz</li><li><b>L</b> number of signal levels; more levels = more bits, but the receiver must still tell them apart</li></ul></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 15</span></div>
@@ -1314,7 +1336,7 @@ a:hover { color: var(--c-accent-strong); }
 </section>
 
 <section class="section" id="shan">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Shannon capacity (noisy)</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=31" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slides 31–32</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>Shannon capacity (noisy)</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=31" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slides 31–32</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[C = B\log_2\left(1 + \text{SNR}\right)\]</div><ul class="vars"><li><b>C</b> capacity in bps (the upper limit)</li><li><b>B</b> bandwidth in Hz</li><li><b>SNR</b> plain ratio, not dB; convert dB first. Signal levels don't appear: they don't change capacity</li></ul></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 17</span></div>
@@ -1339,7 +1361,7 @@ a:hover { color: var(--c-accent-strong); }
 </section>
 
 <section class="section" id="both">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Nyquist and Shannon together</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=33" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slide 33</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>Nyquist and Shannon together</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=33" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slide 33</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[C = B\log_2(1+\text{SNR}) \;\Rightarrow\; R \le C \;\Rightarrow\; L = 2^{R/2B}\]</div><p class="formula__alt">1. Shannon → upper limit C<br>2. Pick a practical rate R below C<br>3. Nyquist → R = 2B log₂ L, solve for L</p></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 19</span></div>
@@ -1364,7 +1386,7 @@ a:hover { color: var(--c-accent-strong); }
 </section>
 
 <section class="section" id="prop">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Propagation time</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=35" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slides 35–37</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>Propagation time</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=35" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slides 35–37</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[T_{\text{prop}} = \frac{\text{Distance}}{\text{Propagation speed}}\]</div><ul class="vars"><li><b>d</b> distance in metres</li><li><b>v</b> propagation speed in m/s</li></ul></div><div class="tri" data-t="d" data-l="T" data-r="v"></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 21</span></div>
@@ -1389,7 +1411,7 @@ a:hover { color: var(--c-accent-strong); }
 </section>
 
 <section class="section" id="trans">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Transmission time</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=35" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slides 35–37</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>Transmission time</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=35" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slides 35–37</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[T_{\text{trans}} = \frac{\text{Message size}}{\text{Bandwidth}}\]</div><ul class="vars"><li><b>size</b> in bits (bytes × 8)</li><li><b>BW</b> bandwidth in bps</li></ul></div><div class="tri" data-t="size" data-l="T" data-r="BW"></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 23</span></div>
@@ -1414,7 +1436,7 @@ a:hover { color: var(--c-accent-strong); }
 </section>
 
 <section class="section" id="lat">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Latency (total delay)</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=35" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slide 35</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>Latency (total delay)</h2><a class="citation" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf#page=35" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-02 Physical Communication Layer.pdf</span><span class="citation__loc">slide 35</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[\text{Latency} = T_{\text{prop}} + T_{\text{trans}} + T_{\text{queue}} + T_{\text{proc}}\]</div><ul class="vars"><li><b>Latency</b> time from the first bit leaving the source until the whole message arrives</li><li><b>T < B</b> throughput is always below bandwidth; jitter is the variation in delay between packets</li></ul></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 25</span></div>
@@ -1441,7 +1463,7 @@ a:hover { color: var(--c-accent-strong); }
 </div>
 
   <div class="deck stack stack--xl" id="d03" hidden>
-  <section class="section">
+  <section class="section" id="ref-d03">
     <div class="section-head"><div class="section-head__text"><h2>Quick reference</h2></div></div>
     <div class="table-wrap">
       <table class="table">
@@ -1472,7 +1494,7 @@ a:hover { color: var(--c-accent-strong); }
   </section>
 
 <section class="section" id="t-baud">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Signal (baud) rate</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=8" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slides 8–9</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>Signal (baud) rate</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=8" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slides 8–9</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[S = c \times N \times \frac{1}{r}\ \text{baud}\]</div><ul class="vars"><li><b>S</b> signal rate in baud (signal elements per second)</li><li><b>c</b> case factor: worst 1, average ½, best 0</li><li><b>N</b> data rate in bps</li><li><b>r</b> data elements carried per signal element</li></ul></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 1</span></div>
@@ -1496,7 +1518,7 @@ a:hover { color: var(--c-accent-strong); }
 </article>
 </section>
 <section class="section" id="t-bmin">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Minimum bandwidth of line codes</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=24" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slides 24–25, 30, 45</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>Minimum bandwidth of line codes</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=24" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slides 24–25, 30, 45</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[B_{\min} = S\]</div><p class="formula__alt">NRZ-L / NRZ-I: \(S_{\text{avg}} = N/2\) · Manchester: 2 × NRZ \(= N\) · MLT-3: about \(N/4\)</p><ul class="vars"><li><b>B<sub>min</sub></b> minimum bandwidth in Hz, equal to the average signal rate</li><li><b>N</b> data rate in bps</li></ul></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 3</span></div>
@@ -1520,7 +1542,7 @@ a:hover { color: var(--c-accent-strong); }
 </article>
 </section>
 <section class="section" id="t-drift">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Clock drift</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=14" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slide 14</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>Clock drift</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=14" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slide 14</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[N_{\text{rx}} = N \times (1 + \text{drift})\]</div><p class="formula__alt">extra bits per second \(= N \times \text{drift}\)</p><ul class="vars"><li><b>N</b> sender data rate in bps</li><li><b>drift</b> how much faster the receiver clock runs, as a fraction (0.1% = 0.001)</li></ul></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 5</span></div>
@@ -1544,7 +1566,7 @@ a:hover { color: var(--c-accent-strong); }
 </article>
 </section>
 <section class="section" id="t-mbnl">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Multilevel coding (mBnL)</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=34" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slides 34–37</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>Multilevel coding (mBnL)</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=34" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slides 34–37</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[2^{m} \le L^{n}\]</div><p class="formula__alt">\(2^{m} = L^{n}\): exact mapping · \(2^{m} < L^{n}\): spare signals for noise immunity and error detection</p><ul class="vars"><li><b>m</b> length of the binary data pattern</li><li><b>n</b> length of the signal pattern</li><li><b>L</b> number of levels: B = 2, T = 3, Q = 4</li></ul></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 7</span></div>
@@ -1568,7 +1590,7 @@ a:hover { color: var(--c-accent-strong); }
 </article>
 </section>
 <section class="section" id="t-block">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Block coding (mB/nB)</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=48" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slides 48–54</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>Block coding (mB/nB)</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=48" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slides 48–54</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[N_{\text{new}} = N \times \frac{n}{m}\]</div><p class="formula__alt">extra codewords \(= 2^{n} - 2^{m}\)</p><ul class="vars"><li><b>m</b> bits in each data group</li><li><b>n</b> bits in the replacement code group (n > m)</li><li><b>N</b> original data rate in bps</li></ul></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 9</span></div>
@@ -1592,7 +1614,7 @@ a:hover { color: var(--c-accent-strong); }
 </article>
 </section>
 <section class="section" id="t-samp">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Sampling rate (Nyquist)</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=64" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slides 64–71</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>Sampling rate (Nyquist)</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=64" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slides 64–71</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[f_s = \frac{1}{T_s} \qquad f_s \ge 2 \times f_{\max}\]</div><p class="formula__alt">low-pass: \(f_{\max}\) = bandwidth · band-pass: \(f_{\max}\) unknown from bandwidth alone</p><ul class="vars"><li><b>f<sub>s</sub></b> sampling rate in samples per second</li><li><b>T<sub>s</sub></b> sampling interval in seconds</li><li><b>f<sub>max</sub></b> highest frequency in the signal</li></ul></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 11</span></div>
@@ -1616,7 +1638,7 @@ a:hover { color: var(--c-accent-strong); }
 </article>
 </section>
 <section class="section" id="t-quant">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Quantization step and error</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=72" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slides 72–74, 77–78</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>Quantization step and error</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=72" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slides 72–74, 77–78</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[\Delta = \frac{\max - \min}{L}\]</div><p class="formula__alt">quantization error range: \(-\Delta/2\) to \(+\Delta/2\); each sample takes the midpoint of its zone</p><ul class="vars"><li><b>Δ</b> height of each zone</li><li><b>L</b> number of quantization levels (zones)</li></ul></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 13</span></div>
@@ -1640,7 +1662,7 @@ a:hover { color: var(--c-accent-strong); }
 </article>
 </section>
 <section class="section" id="t-nb">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Bits per sample</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=75" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slide 75</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>Bits per sample</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=75" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slide 75</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[n_b = \log_2 L\]</div><p class="formula__alt">solve for levels: \(L = 2^{n_b}\)</p><ul class="vars"><li><b>n<sub>b</sub></b> bits per sample</li><li><b>L</b> number of quantization levels</li></ul></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 15</span></div>
@@ -1664,7 +1686,7 @@ a:hover { color: var(--c-accent-strong); }
 </article>
 </section>
 <section class="section" id="t-pcm">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>PCM bit rate</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=79" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slides 79–80</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>PCM bit rate</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=79" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slides 79–80</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[\text{Bit rate} = n_b \times f_s\]</div><ul class="vars"><li><b>n<sub>b</sub></b> bits per sample</li><li><b>f<sub>s</sub></b> sampling rate (at least 2 × f<sub>max</sub>)</li></ul></div><div class="tri" data-t="N" data-l="nb" data-r="fs"></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 17</span></div>
@@ -1688,7 +1710,7 @@ a:hover { color: var(--c-accent-strong); }
 </article>
 </section>
 <section class="section" id="t-pcmbw">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>PCM bandwidth</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=83" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slide 83</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>PCM bandwidth</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=83" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slide 83</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[B_{\min} = n_b \times B_{\text{analog}}\]</div><p class="formula__alt">a digitized signal always needs more bandwidth than the original analog one</p><ul class="vars"><li><b>n<sub>b</sub></b> bits per sample</li><li><b>B<sub>analog</sub></b> bandwidth of the original low-pass signal</li></ul></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 19</span></div>
@@ -1714,7 +1736,7 @@ a:hover { color: var(--c-accent-strong); }
   </div>
 
   <div class="deck stack stack--xl" id="d04" hidden>
-  <section class="section">
+  <section class="section" id="ref-d04">
     <div class="section-head"><div class="section-head__text"><h2>Quick reference</h2></div></div>
     <div class="table-wrap">
       <table class="table">
@@ -1740,7 +1762,7 @@ a:hover { color: var(--c-accent-strong); }
   </section>
 
 <section class="section" id="a-baud">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Bit rate and baud rate</h2><a class="citation" href="sources/NSCOM03-04%20Physical%20Communication%20Layer%20-%20Digital%20to%20Analog%20Transmission.pdf#page=5" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-04 Physical Communication Layer - Digital to Analog Transmission.pdf</span><span class="citation__loc">slides 5–7</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>Bit rate and baud rate</h2><a class="citation" href="sources/NSCOM03-04%20Physical%20Communication%20Layer%20-%20Digital%20to%20Analog%20Transmission.pdf#page=5" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-04 Physical Communication Layer - Digital to Analog Transmission.pdf</span><span class="citation__loc">slides 5–7</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[S = N \times \frac{1}{r} \qquad r = \log_2 L\]</div><p class="formula__alt">in analog transmission of digital data, \(S \le N\)</p><ul class="vars"><li><b>S</b> baud rate (signal elements per second)</li><li><b>N</b> bit rate in bps</li><li><b>r</b> data bits per signal element</li><li><b>L</b> number of different signal elements</li></ul></div><div class="tri" data-t="N" data-l="S" data-r="r"></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 1</span></div>
@@ -1764,7 +1786,7 @@ a:hover { color: var(--c-accent-strong); }
 </article>
 </section>
 <section class="section" id="a-ask">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>ASK bandwidth</h2><a class="citation" href="sources/NSCOM03-04%20Physical%20Communication%20Layer%20-%20Digital%20to%20Analog%20Transmission.pdf#page=9" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-04 Physical Communication Layer - Digital to Analog Transmission.pdf</span><span class="citation__loc">slides 9, 12–13</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>ASK bandwidth</h2><a class="citation" href="sources/NSCOM03-04%20Physical%20Communication%20Layer%20-%20Digital%20to%20Analog%20Transmission.pdf#page=9" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-04 Physical Communication Layer - Digital to Analog Transmission.pdf</span><span class="citation__loc">slides 9, 12–13</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[B = (1 + d) \times S\]</div><p class="formula__alt">carrier \(f_c\) sits in the middle of the available band</p><ul class="vars"><li><b>B</b> bandwidth in Hz</li><li><b>d</b> modulation and filtering factor, between 0 and 1</li><li><b>S</b> signal (baud) rate</li></ul></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 3</span></div>
@@ -1788,7 +1810,7 @@ a:hover { color: var(--c-accent-strong); }
 </article>
 </section>
 <section class="section" id="a-fsk">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>FSK bandwidth</h2><a class="citation" href="sources/NSCOM03-04%20Physical%20Communication%20Layer%20-%20Digital%20to%20Analog%20Transmission.pdf#page=15" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-04 Physical Communication Layer - Digital to Analog Transmission.pdf</span><span class="citation__loc">slides 15–16</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>FSK bandwidth</h2><a class="citation" href="sources/NSCOM03-04%20Physical%20Communication%20Layer%20-%20Digital%20to%20Analog%20Transmission.pdf#page=15" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-04 Physical Communication Layer - Digital to Analog Transmission.pdf</span><span class="citation__loc">slides 15–16</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[B = (1 + d) \times S + 2\Delta f\]</div><p class="formula__alt">a 1 is \(f_1 = f_c + \Delta f\), a 0 is \(f_2 = f_c - \Delta f\)</p><ul class="vars"><li><b>2Δf</b> gap between the two carrier frequencies f<sub>1</sub> and f<sub>2</sub></li><li><b>d</b> between 0 and 1</li><li><b>S</b> signal (baud) rate</li></ul></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 5</span></div>
@@ -1812,7 +1834,7 @@ a:hover { color: var(--c-accent-strong); }
 </article>
 </section>
 <section class="section" id="a-mfsk">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Multilevel FSK bandwidth</h2><a class="citation" href="sources/NSCOM03-04%20Physical%20Communication%20Layer%20-%20Digital%20to%20Analog%20Transmission.pdf#page=18" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-04 Physical Communication Layer - Digital to Analog Transmission.pdf</span><span class="citation__loc">slides 18–19</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>Multilevel FSK bandwidth</h2><a class="citation" href="sources/NSCOM03-04%20Physical%20Communication%20Layer%20-%20Digital%20to%20Analog%20Transmission.pdf#page=18" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-04 Physical Communication Layer - Digital to Analog Transmission.pdf</span><span class="citation__loc">slides 18–19</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[B = (1 + d) \times S + (L - 1)\,2\Delta f = L \times S\]</div><p class="formula__alt">with \(d = 0\) and carriers spaced \(2\Delta f = S\) apart</p><ul class="vars"><li><b>L</b> number of frequencies, \(2^{r}\)</li><li><b>S</b> signal (baud) rate</li></ul></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 7</span></div>
@@ -1836,7 +1858,7 @@ a:hover { color: var(--c-accent-strong); }
 </article>
 </section>
 <section class="section" id="a-psk">
-<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>PSK and QPSK bandwidth</h2><a class="citation" href="sources/NSCOM03-04%20Physical%20Communication%20Layer%20-%20Digital%20to%20Analog%20Transmission.pdf#page=21" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-04 Physical Communication Layer - Digital to Analog Transmission.pdf</span><span class="citation__loc">slides 21, 24, 26</span></a></div></div></div>
+<div class="section-head"><div class="section-head__text"><h2>PSK and QPSK bandwidth</h2><a class="citation" href="sources/NSCOM03-04%20Physical%20Communication%20Layer%20-%20Digital%20to%20Analog%20Transmission.pdf#page=21" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-04 Physical Communication Layer - Digital to Analog Transmission.pdf</span><span class="citation__loc">slides 21, 24, 26</span></a></div></div>
 <div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[B = (1 + d) \times S\]</div><p class="formula__alt">BPSK: \(r = 1\) · QPSK: \(r = 2\), \(L = 4\)</p><ul class="vars"><li><b>S</b> signal (baud) rate, \(N/r\)</li><li><b>d</b> between 0 and 1</li></ul></div></div></div>
 <article class="question">
   <div class="question__meta"><span class="question__number">Problem 9</span></div>
@@ -1862,6 +1884,7 @@ a:hover { color: var(--c-accent-strong); }
   </div>
 
 </div>
+</div>
 </main>
 <footer class="footer">NSCOM03 Data Communications · Built from the NSCOM03-02, -03 and -04 lecture slides</footer>
 
@@ -1886,6 +1909,9 @@ if (location.protocol !== 'file:') {
     document.getElementById('deck-eyebrow').textContent = d.lecture;
     document.getElementById('deck-feeds').textContent = 'Feeds: ' + d.feeds + ' · ' + d.pages + ' pages';
     if (open) open.href = 'sources/' + encodeURIComponent(d.file);
+    document.getElementById('formula-nav').innerHTML = Array.prototype.map.call(document.querySelectorAll('#' + id + ' section[id]'), function (sec) {
+      return '<li><a href="#' + sec.id + '">' + sec.querySelector('h2').textContent + '</a></li>';
+    }).join('');
   }
   function fromHash() {
     var el = location.hash && document.getElementById(location.hash.slice(1));
