@@ -1,4 +1,18 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
+/* Deck picker: the file name in the viewer head is a dropdown that switches the panel below */
+.viewer__head .grow { flex: 1 1 16rem; }
+.deck[hidden] { display: none; }
+.deck-pick { position: relative; display: inline-flex; align-self: flex-start; max-width: 100%; }
+.deck-pick select {
+  appearance: none; -webkit-appearance: none; max-width: 100%; text-overflow: ellipsis; cursor: pointer;
+  padding: var(--sp-1) calc(var(--sp-3) + var(--size-icon)) var(--sp-1) var(--sp-2);
+  border: var(--bw-1) solid var(--c-border-strong); border-radius: var(--radius-md); background: var(--c-surface);
+  font-size: var(--fs-lg); font-weight: var(--fw-semibold); letter-spacing: var(--tracking-tight); line-height: var(--lh-tight);
+}
+.deck-pick select:hover { border-color: var(--c-accent); }
+.deck-pick option { background: var(--c-surface); color: var(--c-ink); }
+.deck-pick .icon { position: absolute; inset-inline-end: var(--sp-2); top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--c-ink-2); }
+</style></head><body>
 <title>NSCOM03 Physical Layer Formulas</title>
 <style>
 /* ==========================================================================
@@ -1019,7 +1033,7 @@ a:hover { color: var(--c-accent-strong); }
 .work { margin: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: var(--lh-base); white-space: pre-wrap; overflow-wrap: anywhere; }
 .table td.formula-cell { color: var(--c-ink); white-space: nowrap; font-size: var(--fs-base); vertical-align: middle; }
 .table th, .table td.num { vertical-align: middle; }
-.const-list { list-style: none; display: flex; flex-wrap: wrap; gap: var(--sp-1) var(--sp-4); font-family: var(--font-mono); font-size: var(--fs-xs); }
+.const-list { list-style: none; display: flex; flex-direction: column; gap: var(--sp-1); font-family: var(--font-mono); font-size: var(--fs-xs); }
 .section { scroll-margin-top: calc(var(--h-topbar) + var(--sp-4)); }
 </style>
 
@@ -1031,6 +1045,7 @@ a:hover { color: var(--c-accent-strong); }
   <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
   <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></symbol>
   <symbol id="i-external" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
   <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
 </svg>
 
@@ -1048,27 +1063,34 @@ a:hover { color: var(--c-accent-strong); }
 
   <div class="section-head">
     <div class="section-head__text">
-      <p class="eyebrow">Lecture 02 · Physical Communication Layer</p>
+      <p class="eyebrow" id="deck-eyebrow">Lecture 02 · Physical Communication Layer</p>
       <div class="section-head__title"><h1>Formula sheet &amp; examples</h1><div class="cluster"><a class="btn btn--sm btn--ghost" href="NSCOM03-mock-midterms-exam.html"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-left"/></svg>Back</a></div></div>
     </div>
   </div>
 
-  <div class="viewer__head"><span class="file__icon" data-type="pdf"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-file-pdf"/></svg></span><div class="grow stack stack--xs"><h2 class="truncate">NSCOM03-02 Physical Communication Layer.pdf</h2>
-    <span class="small muted">Feeds: Signals and Bandwidth, Impairments, Data Rate Limits and Performance · 39 pages</span></div>
+  <div class="viewer__head"><span class="file__icon" data-type="pdf"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-file-pdf"/></svg></span><div class="grow stack stack--xs">
+    <label class="visually-hidden" for="deck-select">Lecture slides</label>
+    <span class="deck-pick"><select id="deck-select" autocomplete="off">
+      <option value="d02">NSCOM03-02 Physical Communication Layer</option>
+      <option value="d03">NSCOM03-03 Digital Transmission</option>
+      <option value="d04">NSCOM03-04 Digital to Analog Transmission</option>
+    </select><svg class="icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></span>
+    <span class="small muted" id="deck-feeds">Feeds: Signals and Bandwidth, Impairments, Data Rate Limits and Performance · 39 pages</span></div>
     <a class="btn btn--sm" id="open-source" href="sources/NSCOM03-02%20Physical%20Communication%20Layer.pdf" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-external"/></svg>Open original file</a></div>
 
+  <div class="deck stack stack--xl" id="d02">
   <section class="section">
     <div class="section-head"><div class="section-head__text"><h2>Quick reference</h2></div></div>
     <div class="table-wrap">
       <table class="table">
         <thead><tr><th scope="col">Topic</th><th scope="col">Formula</th><th scope="col" class="num">Slide</th></tr></thead>
         <tbody>
-          <tr><th scope="row"><a href="#freq">Frequency / period</a></th><td class="formula-cell">\(f = \dfrac{1}{T},\;\; T = \dfrac{1}{f}\)</td><td class="num">7</td></tr>
+          <tr><th scope="row"><a href="#freq">Frequency / period</a></th><td class="formula-cell">\(f = \dfrac{1}{T},\;\; T = \dfrac{1}{f}\)</td><td class="num">6–7</td></tr>
           <tr><th scope="row"><a href="#wave">Wavelength</a></th><td class="formula-cell">\(\lambda = \dfrac{c}{f}\)</td><td class="num">9–10</td></tr>
           <tr><th scope="row"><a href="#bw">Bandwidth (Hz)</a></th><td class="formula-cell">\(B = f_{\text{high}} - f_{\text{low}}\)</td><td class="num">13</td></tr>
           <tr><th scope="row"><a href="#levels">Bits per level</a></th><td class="formula-cell">\(n = \log_2 L\)</td><td class="num">14</td></tr>
           <tr><th scope="row"><a href="#bitlen">Bit duration / length</a></th><td class="formula-cell">\(t_{\text{bit}} = \dfrac{1}{R},\;\; \ell_{\text{bit}} = v \cdot t_{\text{bit}}\)</td><td class="num">14</td></tr>
-          <tr><th scope="row"><a href="#db">Decibel</a></th><td class="formula-cell">\(\text{dB} = 10\log_{10}\dfrac{P_2}{P_1}\)</td><td class="num">21–22</td></tr>
+          <tr><th scope="row"><a href="#db">Decibel</a></th><td class="formula-cell">\(\text{dB} = 10\log_{10}\dfrac{P_2}{P_1}\)</td><td class="num">20–22</td></tr>
           <tr><th scope="row"><a href="#snr">Signal-to-noise ratio</a></th><td class="formula-cell">\(\text{SNR}_{\text{dB}} = 10\log_{10}\text{SNR}\)</td><td class="num">25–26</td></tr>
           <tr><th scope="row"><a href="#nyq">Nyquist (noiseless)</a></th><td class="formula-cell">\(\text{BitRate} = 2B\log_2 L\)</td><td class="num">29–30</td></tr>
           <tr><th scope="row"><a href="#shan">Shannon (noisy)</a></th><td class="formula-cell">\(C = B\log_2(1 + \text{SNR})\)</td><td class="num">31–32</td></tr>
@@ -1225,7 +1247,7 @@ a:hover { color: var(--c-accent-strong); }
   <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
     <div class="feedback feedback--correct">
       <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
-      <div class="tex tex--work">\[\begin{aligned}\text{dB} = 10\log_{10}\frac{0.5\,P_1}{P_1} = 10\log_{10}0.5 = 10(-0.3) = -3\ \text{dB}\end{aligned}\]</div>
+      <div class="tex tex--work">\[\begin{aligned}\text{dB} = 10\log_{10}\frac{0.5\,P_1}{P_1} = 10\log_{10}0.5 = 10(-0.301) \approx -3\ \text{dB}\end{aligned}\]</div>
     </div>
   </details>
 </article>
@@ -1300,7 +1322,7 @@ a:hover { color: var(--c-accent-strong); }
   <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
     <div class="feedback feedback--correct">
       <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
-      <div class="tex tex--work">\[\begin{aligned}C &= 3000\log_2(1 + 3162) = 3000\log_2 3163 \\ &= 3000 \times 11.62 \approx 34{,}860\ \text{bps}\end{aligned}\]</div>
+      <div class="tex tex--work">\[\begin{aligned}C &= 3000\log_2(1 + 3162) = 3000\log_2 3163 \\ &= 3000 \times 11.62 \approx 34{,}860\ \text{bps}\end{aligned}\]</div><p class="feedback__body">This is the slide’s answer, which rounds log₂ 3163 to 11.62. Unrounded, log₂ 3163 = 11.627, giving about 34,881 bps.</p>
     </div>
   </details>
 </article>
@@ -1417,8 +1439,431 @@ a:hover { color: var(--c-accent-strong); }
 </section>
 
 </div>
+
+  <div class="deck stack stack--xl" id="d03" hidden>
+  <section class="section">
+    <div class="section-head"><div class="section-head__text"><h2>Quick reference</h2></div></div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th scope="col">Topic</th><th scope="col">Formula</th><th scope="col" class="num">Slide</th></tr></thead>
+        <tbody>
+          <tr><th scope="row"><a href="#t-baud">Signal (baud) rate</a></th><td class="formula-cell">\(S = c \times N \times \dfrac{1}{r}\)</td><td class="num">8–9</td></tr>
+          <tr><th scope="row"><a href="#t-bmin">Minimum bandwidth</a></th><td class="formula-cell">\(B_{\min} = S\)</td><td class="num">24–25, 30, 45</td></tr>
+          <tr><th scope="row"><a href="#t-drift">Clock drift</a></th><td class="formula-cell">\(N_{\text{rx}} = N(1 + \text{drift})\)</td><td class="num">14</td></tr>
+          <tr><th scope="row"><a href="#t-mbnl">Multilevel coding (mBnL)</a></th><td class="formula-cell">\(2^{m} \le L^{n}\)</td><td class="num">34–37</td></tr>
+          <tr><th scope="row"><a href="#t-block">Block coding (mB/nB)</a></th><td class="formula-cell">\(N_{\text{new}} = N \times \dfrac{n}{m}\)</td><td class="num">48–54</td></tr>
+          <tr><th scope="row"><a href="#t-samp">Sampling rate (Nyquist)</a></th><td class="formula-cell">\(f_s = \dfrac{1}{T_s},\;\; f_s \ge 2f_{\max}\)</td><td class="num">64–71</td></tr>
+          <tr><th scope="row"><a href="#t-quant">Quantization step</a></th><td class="formula-cell">\(\Delta = \dfrac{\max - \min}{L}\)</td><td class="num">72–74, 77–78</td></tr>
+          <tr><th scope="row"><a href="#t-nb">Bits per sample</a></th><td class="formula-cell">\(n_b = \log_2 L\)</td><td class="num">75</td></tr>
+          <tr><th scope="row"><a href="#t-pcm">PCM bit rate</a></th><td class="formula-cell">\(\text{BitRate} = n_b \times f_s\)</td><td class="num">79–80</td></tr>
+          <tr><th scope="row"><a href="#t-pcmbw">PCM bandwidth</a></th><td class="formula-cell">\(B_{\min} = n_b \times B_{\text{analog}}\)</td><td class="num">83</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout--neutral">
+      <span class="callout__icon"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg></span>
+      <div class="callout__body">
+        <p class="callout__title">Constants and units</p>
+        <ul class="const-list">
+          <li>c: worst 1 · average ½ · best 0</li><li>r = data elements ÷ signal elements</li><li>NRZ: B<sub>min</sub> = N/2</li><li>Manchester: B<sub>min</sub> = N</li><li>MLT-3: ≈ N/4</li><li>voice: f<sub>max</sub> = 4 kHz</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+<section class="section" id="t-baud">
+<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Signal (baud) rate</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=8" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slides 8–9</span></a></div></div></div>
+<div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[S = c \times N \times \frac{1}{r}\ \text{baud}\]</div><ul class="vars"><li><b>S</b> signal rate in baud (signal elements per second)</li><li><b>c</b> case factor: worst 1, average ½, best 0</li><li><b>N</b> data rate in bps</li><li><b>r</b> data elements carried per signal element</li></ul></div></div></div>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 1</span></div>
+  <p class="question__stem">A signal carries one data element per signal element (r = 1). The bit rate is 100 kbps. What is the average baud rate if c is between 0 and 1?</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}c &= \tfrac{1}{2}\ \text{(average)} \\ S &= \tfrac{1}{2} \times 100{,}000 \times \tfrac{1}{1} = 50{,}000\ \text{baud} = 50\ \text{kbaud}\end{aligned}\]</div>
+    </div>
+  </details>
+</article>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 2</span></div>
+  <p class="question__stem">A scheme carries 2 data elements per signal element (r = 2) at 4 Mbps. What are the average and worst-case baud rates?</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}S_{\text{avg}} &= \tfrac{1}{2} \times 4\times10^{6} \times \tfrac{1}{2} = 1\ \text{Mbaud} \\ S_{\text{worst}} &= 1 \times 4\times10^{6} \times \tfrac{1}{2} = 2\ \text{Mbaud}\end{aligned}\]</div>
+    </div>
+  </details>
+</article>
+</section>
+<section class="section" id="t-bmin">
+<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Minimum bandwidth of line codes</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=24" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slides 24–25, 30, 45</span></a></div></div></div>
+<div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[B_{\min} = S\]</div><p class="formula__alt">NRZ-L / NRZ-I: \(S_{\text{avg}} = N/2\) · Manchester: 2 × NRZ \(= N\) · MLT-3: about \(N/4\)</p><ul class="vars"><li><b>B<sub>min</sub></b> minimum bandwidth in Hz, equal to the average signal rate</li><li><b>N</b> data rate in bps</li></ul></div></div></div>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 3</span></div>
+  <p class="question__stem">A system uses NRZ-I to transfer 1 Mbps. What are the average signal rate and the minimum bandwidth?</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}S &= c \times N \times \tfrac{1}{r} = \tfrac{1}{2} \times 10^{6} \times 1 = 500\ \text{kbaud} \\ B_{\min} &= S = 500\ \text{kHz}\end{aligned}\]</div>
+    </div>
+  </details>
+</article>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 4</span></div>
+  <p class="question__stem">The same 10 Mbps stream is sent with NRZ-I, with Manchester, and with MLT-3. What minimum bandwidth does each need?</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}\text{NRZ-I:}\quad B_{\min} &= N/2 = 5\ \text{MHz} \\ \text{Manchester:}\quad B_{\min} &= 2 \times 5 = 10\ \text{MHz} \\ \text{MLT-3:}\quad B_{\min} &\approx N/4 = 2.5\ \text{MHz}\end{aligned}\]</div><p class="feedback__body">Manchester pays double the bandwidth for a mid-bit transition that keeps sender and receiver in sync.</p>
+    </div>
+  </details>
+</article>
+</section>
+<section class="section" id="t-drift">
+<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Clock drift</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=14" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slide 14</span></a></div></div></div>
+<div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[N_{\text{rx}} = N \times (1 + \text{drift})\]</div><p class="formula__alt">extra bits per second \(= N \times \text{drift}\)</p><ul class="vars"><li><b>N</b> sender data rate in bps</li><li><b>drift</b> how much faster the receiver clock runs, as a fraction (0.1% = 0.001)</li></ul></div></div></div>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 5</span></div>
+  <p class="question__stem">The receiver clock is 0.1% faster than the sender clock. How many bits per second does the receiver get at 1 kbps? At 1 Mbps?</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}1\ \text{kbps:}\quad N_{\text{rx}} &= 1000 \times 1.001 = 1001\ \text{bps (1 extra)} \\ 1\ \text{Mbps:}\quad N_{\text{rx}} &= 10^{6} \times 1.001 = 1{,}001{,}000\ \text{bps (1000 extra)}\end{aligned}\]</div>
+    </div>
+  </details>
+</article>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 6</span></div>
+  <p class="question__stem">A receiver clock runs 0.2% fast on a 10 kbps link. How many extra bits per second does it read?</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}\text{extra} = 10{,}000 \times 0.002 = 20\ \text{bps} \;\Rightarrow\; N_{\text{rx}} = 10{,}020\ \text{bps}\end{aligned}\]</div>
+    </div>
+  </details>
+</article>
+</section>
+<section class="section" id="t-mbnl">
+<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Multilevel coding (mBnL)</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=34" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slides 34–37</span></a></div></div></div>
+<div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[2^{m} \le L^{n}\]</div><p class="formula__alt">\(2^{m} = L^{n}\): exact mapping · \(2^{m} < L^{n}\): spare signals for noise immunity and error detection</p><ul class="vars"><li><b>m</b> length of the binary data pattern</li><li><b>n</b> length of the signal pattern</li><li><b>L</b> number of levels: B = 2, T = 3, Q = 4</li></ul></div></div></div>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 7</span></div>
+  <p class="question__stem">2B1Q sends 2 bits as 1 quaternary (4-level) signal element. Check that the mapping works.</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}2^{m} &= 2^{2} = 4 \text{ data patterns} \\ L^{n} &= 4^{1} = 4 \text{ signal patterns} \\ 4 &= 4 \;\Rightarrow\; \text{exact mapping}\end{aligned}\]</div>
+    </div>
+  </details>
+</article>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 8</span></div>
+  <p class="question__stem">8B6T sends 8 bits as 6 ternary (3-level) signal elements. Is it valid, and how many signal patterns are left over?</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}2^{8} &= 256 \text{ data patterns} \\ 3^{6} &= 729 \text{ signal patterns} \\ 256 \le 729 \;&\Rightarrow\; 729 - 256 = 473 \text{ spare}\end{aligned}\]</div>
+    </div>
+  </details>
+</article>
+</section>
+<section class="section" id="t-block">
+<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Block coding (mB/nB)</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=48" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slides 48–54</span></a></div></div></div>
+<div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[N_{\text{new}} = N \times \frac{n}{m}\]</div><p class="formula__alt">extra codewords \(= 2^{n} - 2^{m}\)</p><ul class="vars"><li><b>m</b> bits in each data group</li><li><b>n</b> bits in the replacement code group (n > m)</li><li><b>N</b> original data rate in bps</li></ul></div></div></div>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 9</span></div>
+  <p class="question__stem">You need to send 1 Mbps using 4B/5B. What minimum bandwidth is needed with NRZ-I? With Manchester?</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}N_{\text{new}} &= 10^{6} \times \tfrac{5}{4} = 1.25\ \text{Mbps} \\ \text{NRZ-I:}\quad B_{\min} &= N/2 = 625\ \text{kHz} \\ \text{Manchester:}\quad B_{\min} &= N = 1.25\ \text{MHz}\end{aligned}\]</div><p class="feedback__body">NRZ-I needs less bandwidth but has a DC component problem; Manchester needs more bandwidth but has no DC component.</p>
+    </div>
+  </details>
+</article>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 10</span></div>
+  <p class="question__stem">How many extra codewords does 4B/5B have? What rate does 8B/10B produce from a 1 Gbps stream?</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}2^{5} - 2^{4} &= 32 - 16 = 16 \text{ extra words} \\ N_{\text{new}} &= 10^{9} \times \tfrac{10}{8} = 1.25\ \text{Gbps}\end{aligned}\]</div>
+    </div>
+  </details>
+</article>
+</section>
+<section class="section" id="t-samp">
+<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Sampling rate (Nyquist)</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=64" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slides 64–71</span></a></div></div></div>
+<div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[f_s = \frac{1}{T_s} \qquad f_s \ge 2 \times f_{\max}\]</div><p class="formula__alt">low-pass: \(f_{\max}\) = bandwidth · band-pass: \(f_{\max}\) unknown from bandwidth alone</p><ul class="vars"><li><b>f<sub>s</sub></b> sampling rate in samples per second</li><li><b>T<sub>s</sub></b> sampling interval in seconds</li><li><b>f<sub>max</sub></b> highest frequency in the signal</li></ul></div></div></div>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 11</span></div>
+  <p class="question__stem">Telephone companies assume voice has a maximum frequency of 4000 Hz. What sampling rate do they use, and what is the sampling interval?</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}f_s &= 2 \times 4000 = 8000\ \text{samples/s} \\ T_s &= \tfrac{1}{8000} = 125\ \mu\text{s}\end{aligned}\]</div>
+    </div>
+  </details>
+</article>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 12</span></div>
+  <p class="question__stem">A complex low-pass signal has a bandwidth of 200 kHz. What is its minimum sampling rate? What if it were a band-pass signal with the same bandwidth?</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}\text{low-pass:}\quad f_s &= 2 \times 200\ \text{kHz} = 400{,}000\ \text{samples/s}\end{aligned}\]</div><p class="feedback__body">For the band-pass signal it can’t be found: the bandwidth doesn’t say where the band starts or ends, so the maximum frequency is unknown.</p>
+    </div>
+  </details>
+</article>
+</section>
+<section class="section" id="t-quant">
+<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Quantization step and error</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=72" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slides 72–74, 77–78</span></a></div></div></div>
+<div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[\Delta = \frac{\max - \min}{L}\]</div><p class="formula__alt">quantization error range: \(-\Delta/2\) to \(+\Delta/2\); each sample takes the midpoint of its zone</p><ul class="vars"><li><b>Δ</b> height of each zone</li><li><b>L</b> number of quantization levels (zones)</li></ul></div></div></div>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 13</span></div>
+  <p class="question__stem">A signal ranges from −20 V to +20 V and uses L = 8 levels. Find the zone width and the midpoints.</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}\Delta &= \frac{20 - (-20)}{8} = 5\ \text{V} \\ \text{midpoints} &= -17.5,\, -12.5,\, -7.5,\, -2.5,\, 2.5,\, 7.5,\, 12.5,\, 17.5\end{aligned}\]</div>
+    </div>
+  </details>
+</article>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 14</span></div>
+  <p class="question__stem">A 0 V to 10 V signal is quantized with L = 16. What is Δ, and what is the largest possible quantization error?</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}\Delta &= \frac{10 - 0}{16} = 0.625\ \text{V} \\ |\text{error}|_{\max} &= \frac{\Delta}{2} = 0.3125\ \text{V}\end{aligned}\]</div>
+    </div>
+  </details>
+</article>
+</section>
+<section class="section" id="t-nb">
+<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Bits per sample</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=75" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slide 75</span></a></div></div></div>
+<div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[n_b = \log_2 L\]</div><p class="formula__alt">solve for levels: \(L = 2^{n_b}\)</p><ul class="vars"><li><b>n<sub>b</sub></b> bits per sample</li><li><b>L</b> number of quantization levels</li></ul></div></div></div>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 15</span></div>
+  <p class="question__stem">The −20 V to +20 V signal above uses L = 8. How many bits per sample, and what code does the −20 V to −15 V zone get?</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}n_b = \log_2 8 = 3 \text{ bits} \;\Rightarrow\; 000, 001, \ldots, 111\end{aligned}\]</div><p class="feedback__body">The lowest zone, −20 V to −15 V, is 000.</p>
+    </div>
+  </details>
+</article>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 16</span></div>
+  <p class="question__stem">How many bits per sample does L = 256 need? How many levels does 5 bits per sample give?</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}n_b &= \log_2 256 = 8 \text{ bits} \\ L &= 2^{5} = 32 \text{ levels}\end{aligned}\]</div>
+    </div>
+  </details>
+</article>
+</section>
+<section class="section" id="t-pcm">
+<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>PCM bit rate</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=79" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slides 79–80</span></a></div></div></div>
+<div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[\text{Bit rate} = n_b \times f_s\]</div><ul class="vars"><li><b>n<sub>b</sub></b> bits per sample</li><li><b>f<sub>s</sub></b> sampling rate (at least 2 × f<sub>max</sub>)</li></ul></div><div class="tri" data-t="N" data-l="nb" data-r="fs"></div></div></div>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 17</span></div>
+  <p class="question__stem">We digitize the human voice (0 to 4000 Hz) with 8 bits per sample. What is the bit rate?</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}f_s &= 2 \times 4000 = 8000\ \text{samples/s} \\ \text{Bit rate} &= 8 \times 8000 = 64{,}000\ \text{bps} = 64\ \text{kbps}\end{aligned}\]</div>
+    </div>
+  </details>
+</article>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 18</span></div>
+  <p class="question__stem">Audio up to 20 kHz is sampled at the Nyquist rate with 16 bits per sample. What is the bit rate?</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}f_s &= 2 \times 20{,}000 = 40{,}000\ \text{samples/s} \\ \text{Bit rate} &= 16 \times 40{,}000 = 640\ \text{kbps}\end{aligned}\]</div>
+    </div>
+  </details>
+</article>
+</section>
+<section class="section" id="t-pcmbw">
+<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>PCM bandwidth</h2><a class="citation" href="sources/NSCOM03-03%20Physical%20Communication%20Layer%20-%20Digital%20Transmission.pdf#page=83" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf</span><span class="citation__loc">slide 83</span></a></div></div></div>
+<div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[B_{\min} = n_b \times B_{\text{analog}}\]</div><p class="formula__alt">a digitized signal always needs more bandwidth than the original analog one</p><ul class="vars"><li><b>n<sub>b</sub></b> bits per sample</li><li><b>B<sub>analog</sub></b> bandwidth of the original low-pass signal</li></ul></div></div></div>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 19</span></div>
+  <p class="question__stem">A 4 kHz low-pass analog signal is sent as is, then digitized with 8 bits per sample. What minimum bandwidth does each need?</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}\text{analog:}\quad B_{\min} &= 4\ \text{kHz} \\ \text{digitized:}\quad B_{\min} &= 8 \times 4\ \text{kHz} = 32\ \text{kHz}\end{aligned}\]</div>
+    </div>
+  </details>
+</article>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 20</span></div>
+  <p class="question__stem">A 3 kHz voice channel is digitized with 7 bits per sample. What minimum bandwidth does it need?</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}B_{\min} = 7 \times 3\ \text{kHz} = 21\ \text{kHz}\end{aligned}\]</div>
+    </div>
+  </details>
+</article>
+</section>
+  </div>
+
+  <div class="deck stack stack--xl" id="d04" hidden>
+  <section class="section">
+    <div class="section-head"><div class="section-head__text"><h2>Quick reference</h2></div></div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th scope="col">Topic</th><th scope="col">Formula</th><th scope="col" class="num">Slide</th></tr></thead>
+        <tbody>
+          <tr><th scope="row"><a href="#a-baud">Bit rate and baud rate</a></th><td class="formula-cell">\(S = N \times \dfrac{1}{r},\;\; r = \log_2 L\)</td><td class="num">5–7</td></tr>
+          <tr><th scope="row"><a href="#a-ask">ASK bandwidth</a></th><td class="formula-cell">\(B = (1 + d)S\)</td><td class="num">9, 12–13</td></tr>
+          <tr><th scope="row"><a href="#a-fsk">FSK bandwidth</a></th><td class="formula-cell">\(B = (1 + d)S + 2\Delta f\)</td><td class="num">15–16</td></tr>
+          <tr><th scope="row"><a href="#a-mfsk">Multilevel FSK bandwidth</a></th><td class="formula-cell">\(B = L \times S\)</td><td class="num">18–19</td></tr>
+          <tr><th scope="row"><a href="#a-psk">PSK / QPSK bandwidth</a></th><td class="formula-cell">\(B = (1 + d)S\)</td><td class="num">21, 24, 26</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout--neutral">
+      <span class="callout__icon"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg></span>
+      <div class="callout__body">
+        <p class="callout__title">Constants and units</p>
+        <ul class="const-list">
+          <li>d: 0 to 1 (modulation and filtering)</li><li>BASK / BPSK: r = 1</li><li>QPSK: r = 2, L = 4</li><li>carrier f<sub>c</sub> = middle of the band</li><li>full duplex: split the band in two</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+<section class="section" id="a-baud">
+<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Bit rate and baud rate</h2><a class="citation" href="sources/NSCOM03-04%20Physical%20Communication%20Layer%20-%20Digital%20to%20Analog%20Transmission.pdf#page=5" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-04 Physical Communication Layer - Digital to Analog Transmission.pdf</span><span class="citation__loc">slides 5–7</span></a></div></div></div>
+<div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[S = N \times \frac{1}{r} \qquad r = \log_2 L\]</div><p class="formula__alt">in analog transmission of digital data, \(S \le N\)</p><ul class="vars"><li><b>S</b> baud rate (signal elements per second)</li><li><b>N</b> bit rate in bps</li><li><b>r</b> data bits per signal element</li><li><b>L</b> number of different signal elements</li></ul></div><div class="tri" data-t="N" data-l="S" data-r="r"></div></div></div>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 1</span></div>
+  <p class="question__stem">An analog signal carries 4 bits per signal element, and 1000 signal elements are sent per second. Find the bit rate.</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}N = S \times r = 1000 \times 4 = 4000\ \text{bps}\end{aligned}\]</div>
+    </div>
+  </details>
+</article>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 2</span></div>
+  <p class="question__stem">An analog signal has a bit rate of 8000 bps and a baud rate of 1000 baud. How many data elements does each signal element carry? How many signal elements are needed?</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}r &= \frac{N}{S} = \frac{8000}{1000} = 8 \text{ bits per element} \\ L &= 2^{r} = 2^{8} = 256 \text{ signal elements}\end{aligned}\]</div>
+    </div>
+  </details>
+</article>
+</section>
+<section class="section" id="a-ask">
+<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>ASK bandwidth</h2><a class="citation" href="sources/NSCOM03-04%20Physical%20Communication%20Layer%20-%20Digital%20to%20Analog%20Transmission.pdf#page=9" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-04 Physical Communication Layer - Digital to Analog Transmission.pdf</span><span class="citation__loc">slides 9, 12–13</span></a></div></div></div>
+<div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[B = (1 + d) \times S\]</div><p class="formula__alt">carrier \(f_c\) sits in the middle of the available band</p><ul class="vars"><li><b>B</b> bandwidth in Hz</li><li><b>d</b> modulation and filtering factor, between 0 and 1</li><li><b>S</b> signal (baud) rate</li></ul></div></div></div>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 3</span></div>
+  <p class="question__stem">The available bandwidth is 100 kHz, from 200 to 300 kHz. Using ASK with d = 1, what are the carrier frequency and the bit rate?</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}f_c &= \frac{200 + 300}{2} = 250\ \text{kHz} \\ S &= \frac{B}{1 + d} = \frac{100\ \text{kHz}}{2} = 50\ \text{kbaud} \\ N &= S \times r = 50 \times 1 = 50\ \text{kbps}\end{aligned}\]</div>
+    </div>
+  </details>
+</article>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 4</span></div>
+  <p class="question__stem">The same 200–300 kHz band is used for full-duplex ASK with d = 1. What data rate does each direction get?</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}B_{\text{each}} &= \frac{100}{2} = 50\ \text{kHz} \\ S &= \frac{50}{1 + 1} = 25\ \text{kbaud} \;\Rightarrow\; N = 25\ \text{kbps each way}\end{aligned}\]</div><p class="feedback__body">Each direction gets its own carrier in the middle of its half of the band.</p>
+    </div>
+  </details>
+</article>
+</section>
+<section class="section" id="a-fsk">
+<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>FSK bandwidth</h2><a class="citation" href="sources/NSCOM03-04%20Physical%20Communication%20Layer%20-%20Digital%20to%20Analog%20Transmission.pdf#page=15" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-04 Physical Communication Layer - Digital to Analog Transmission.pdf</span><span class="citation__loc">slides 15–16</span></a></div></div></div>
+<div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[B = (1 + d) \times S + 2\Delta f\]</div><p class="formula__alt">a 1 is \(f_1 = f_c + \Delta f\), a 0 is \(f_2 = f_c - \Delta f\)</p><ul class="vars"><li><b>2Δf</b> gap between the two carrier frequencies f<sub>1</sub> and f<sub>2</sub></li><li><b>d</b> between 0 and 1</li><li><b>S</b> signal (baud) rate</li></ul></div></div></div>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 5</span></div>
+  <p class="question__stem">The available bandwidth is 100 kHz, from 200 to 300 kHz. Using FSK with d = 1 and 2Δf = 50 kHz, what are the carrier frequency and the bit rate?</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}f_c &= 250\ \text{kHz} \\ 100 &= (1 + 1)S + 50 \\ S &= \frac{100 - 50}{2} = 25\ \text{kbaud} \;\Rightarrow\; N = 25\ \text{kbps}\end{aligned}\]</div>
+    </div>
+  </details>
+</article>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 6</span></div>
+  <p class="question__stem">Binary FSK sends 10 kbps with d = 0.5, and the two carriers are 30 kHz apart. What bandwidth is needed?</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}S &= N = 10\ \text{kbaud} \quad (r = 1) \\ B &= (1 + 0.5)(10) + 30 = 45\ \text{kHz}\end{aligned}\]</div>
+    </div>
+  </details>
+</article>
+</section>
+<section class="section" id="a-mfsk">
+<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>Multilevel FSK bandwidth</h2><a class="citation" href="sources/NSCOM03-04%20Physical%20Communication%20Layer%20-%20Digital%20to%20Analog%20Transmission.pdf#page=18" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-04 Physical Communication Layer - Digital to Analog Transmission.pdf</span><span class="citation__loc">slides 18–19</span></a></div></div></div>
+<div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[B = (1 + d) \times S + (L - 1)\,2\Delta f = L \times S\]</div><p class="formula__alt">with \(d = 0\) and carriers spaced \(2\Delta f = S\) apart</p><ul class="vars"><li><b>L</b> number of frequencies, \(2^{r}\)</li><li><b>S</b> signal (baud) rate</li></ul></div></div></div>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 7</span></div>
+  <p class="question__stem">Data is sent 3 bits at a time at 3 Mbps on a 10 MHz carrier. Find the number of frequencies, the baud rate, and the bandwidth.</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}L &= 2^{3} = 8 \\ S &= \frac{3\ \text{Mbps}}{3} = 1\ \text{Mbaud} \;\Rightarrow\; 2\Delta f = 1\ \text{MHz} \\ B &= 8 \times 1\ \text{M} = 8\ \text{MHz}\end{aligned}\]</div>
+    </div>
+  </details>
+</article>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 8</span></div>
+  <p class="question__stem">A 4-FSK system sends 2 Mbps with d = 0 and its carriers spaced one baud apart (2Δf = S). What are the baud rate and the bandwidth?</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}r &= \log_2 4 = 2 \;\Rightarrow\; S = \frac{2\ \text{Mbps}}{2} = 1\ \text{Mbaud} \\ B &= 4 \times 1\ \text{M} = 4\ \text{MHz}\end{aligned}\]</div>
+    </div>
+  </details>
+</article>
+</section>
+<section class="section" id="a-psk">
+<div class="section-head"><div class="section-head__text"><div class="section-head__title"><h2>PSK and QPSK bandwidth</h2><a class="citation" href="sources/NSCOM03-04%20Physical%20Communication%20Layer%20-%20Digital%20to%20Analog%20Transmission.pdf#page=21" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-pdf"/></svg><span class="citation__file">NSCOM03-04 Physical Communication Layer - Digital to Analog Transmission.pdf</span><span class="citation__loc">slides 21, 24, 26</span></a></div></div></div>
+<div class="card card--inset"><div class="formula"><div class="formula__main"><div class="tex">\[B = (1 + d) \times S\]</div><p class="formula__alt">BPSK: \(r = 1\) · QPSK: \(r = 2\), \(L = 4\)</p><ul class="vars"><li><b>S</b> signal (baud) rate, \(N/r\)</li><li><b>d</b> between 0 and 1</li></ul></div></div></div>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 9</span></div>
+  <p class="question__stem">Find the bandwidth for a signal transmitting at 12 Mbps with QPSK, d = 0.</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}S &= N \times \tfrac{1}{r} = \frac{12\ \text{Mbps}}{2} = 6\ \text{Mbaud} \\ B &= (1 + 0) \times 6 = 6\ \text{MHz}\end{aligned}\]</div>
+    </div>
+  </details>
+</article>
+<article class="question">
+  <div class="question__meta"><span class="question__number">Problem 10</span></div>
+  <p class="question__stem">The same 12 Mbps is sent with BPSK, also with d = 0. What bandwidth is needed?</p>
+  <details class="reveal"><summary class="btn btn--sm">Show answer</summary>
+    <div class="feedback feedback--correct">
+      <p class="feedback__verdict"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Answer</p>
+      <div class="tex tex--work">\[\begin{aligned}S &= \frac{12\ \text{Mbps}}{1} = 12\ \text{Mbaud} \\ B &= (1 + 0) \times 12 = 12\ \text{MHz}\end{aligned}\]</div><p class="feedback__body">QPSK carries 2 bits per signal element, so it halves the baud rate and needs half the bandwidth of BPSK (6 MHz vs 12 MHz).</p>
+    </div>
+  </details>
+</article>
+</section>
+  </div>
+
+</div>
 </main>
-<footer class="footer">NSCOM03 Data Communications · Built from NSCOM03-02 Physical Communication Layer.pdf</footer>
+<footer class="footer">NSCOM03 Data Communications · Built from the NSCOM03-02, -03 and -04 lecture slides</footer>
 
 <script>
 // Slides aren't hosted online: drop the "Open original file" button and make citations plain labels.
@@ -1426,6 +1871,34 @@ if (location.protocol !== 'file:') {
   document.getElementById('open-source').remove();
   document.querySelectorAll('a.citation').forEach(function (a) { a.removeAttribute('href'); a.style.cursor = 'default'; });
 }
+// Deck switcher: one panel per slide deck; the URL hash picks the deck (#d03) or a section inside it (#t-pcm).
+(function () {
+  var DECKS = {
+    d02: { file: 'NSCOM03-02 Physical Communication Layer.pdf', lecture: 'Lecture 02 · Physical Communication Layer', feeds: 'Signals and Bandwidth, Impairments, Data Rate Limits and Performance', pages: 39 },
+    d03: { file: 'NSCOM03-03 Physical Communication Layer - Digital Transmission.pdf', lecture: 'Lecture 03 · Digital Transmission', feeds: 'Line Coding, Block Coding and Scrambling, Analog-to-Digital Conversion and Transmission Modes', pages: 96 },
+    d04: { file: 'NSCOM03-04 Physical Communication Layer - Digital to Analog Transmission.pdf', lecture: 'Lecture 04 · Digital to Analog Transmission', feeds: 'Digital-to-Analog Conversion', pages: 31 }
+  };
+  var sel = document.getElementById('deck-select'), open = document.getElementById('open-source');
+  function show(id) {
+    var d = DECKS[id];
+    Object.keys(DECKS).forEach(function (k) { document.getElementById(k).hidden = k !== id; });
+    sel.value = id;
+    document.getElementById('deck-eyebrow').textContent = d.lecture;
+    document.getElementById('deck-feeds').textContent = 'Feeds: ' + d.feeds + ' · ' + d.pages + ' pages';
+    if (open) open.href = 'sources/' + encodeURIComponent(d.file);
+  }
+  function fromHash() {
+    var el = location.hash && document.getElementById(location.hash.slice(1));
+    var deck = el && el.closest('.deck');
+    show(deck ? deck.id : 'd02');
+    if (el && el !== deck) el.scrollIntoView();
+  }
+  // Read the dropdown at click time, so the link always opens the deck it shows.
+  if (open) open.addEventListener('click', function () { open.href = 'sources/' + encodeURIComponent(DECKS[sel.value].file); });
+  sel.addEventListener('change', function () { history.replaceState(null, '', '#' + sel.value); show(sel.value); });
+  window.addEventListener('hashchange', fromHash);
+  fromHash();
+})();
 (function () {
   var KEY = 'mockexam:theme', root = document.documentElement, btn = document.getElementById('theme-toggle');
   function paint() { btn.innerHTML = '<svg class="icon" aria-hidden="true"><use href="#i-' + (root.getAttribute('data-theme') === 'dark' ? 'sun' : 'moon') + '"/></svg>'; }
