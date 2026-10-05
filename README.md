@@ -1,8 +1,8 @@
-# NSCOM03 Mock Midterms Exam
+# NSCOM03 Midterms Reviewer
 
 Mock midterms exam and practice quizzes for NSCOM03. Open `NSCOM03-mock-midterms-exam.html` in any browser, or try it online at **https://aq7zo.github.io/NSCOM03-mock-exam/**.
 
-Also included: `NSCOM03 Physical Layer Formulas.html`, formula sheets with worked examples for lectures 02 (Physical Communication Layer), 03 (Digital Transmission) and 04 (Digital to Analog Transmission) ([view online](https://aq7zo.github.io/NSCOM03-mock-exam/NSCOM03%20Physical%20Layer%20Formulas.html)). It's also a card on the exam's home screen.
+Also included: `NSCOM03-02-03-04 Formulas.html`, formula sheets with worked examples for lectures 02 (Physical Communication Layer), 03 (Digital Transmission) and 04 (Digital to Analog Transmission) ([view online](https://aq7zo.github.io/NSCOM03-mock-exam/NSCOM03-02-03-04%20Formulas.html)). It's also a card on the exam's home screen.
 
 Also linked: [Line Encoding Diagrams & Additional Notes (Miro board)](https://miro.com/app/board/uXjVEekzuEo=/?share_link_id=209019946829) Status: Work-In-Progress
 
