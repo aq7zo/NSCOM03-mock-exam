@@ -4874,15 +4874,29 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
   /* ── 8. Exam ────────────────────────────────────────────────────────── */
   function sectionIndexOf(run, i) { var n = 0; for (var s = 0; s < run.sections.length; s++) { n += run.sections[s].items.length; if (i < n) return s; } return run.sections.length - 1; }
   function optionKey(it, i) { return isBinary(it) ? it.options[i].charAt(0) : LETTERS[i]; }
+  // Display order of an item's options: a shuffle seeded by attempt/session + item id, so it stays put across
+  // re-renders, resume and answer review. Values stay original indexes, so answers and scoring are unaffected.
+  function optOrder(it, seed) {
+    var idx = it.options.map(function (o, i) { return i; });
+    if (isBinary(it) || !seed) return idx;
+    var h = 2166136261, s = seed + '|' + it.id;
+    for (var c = 0; c < s.length; c++) h = Math.imul(h ^ s.charCodeAt(c), 16777619);
+    for (var i = idx.length - 1; i > 0; i--) {
+      h = Math.imul(h ^ (h >>> 15), 2246822507); h ^= h >>> 13;
+      var j = (h >>> 0) % (i + 1), t = idx[i]; idx[i] = idx[j]; idx[j] = t;
+    }
+    return idx;
+  }
   function optionsHTML(it, cfg) {
-    // cfg: {name, action, checked, disabled, states: [..], statuses: [..], skip: bool, skipChecked}
+    // cfg: {name, action, checked, disabled, states: [..], statuses: [..], skip: bool, skipChecked, seed}
     var multi = isMulti(it), mod = isBinary(it) ? ' options--inline' : multi ? ' options--multi' : '';
     var h = '<ul class="options' + mod + '" role="' + (multi ? 'group' : 'radiogroup') + '" aria-label="Answer choices"' + (cfg.disabled ? ' aria-disabled="true"' : '') + '>';
-    it.options.forEach(function (o, i) {
+    optOrder(it, cfg.seed).forEach(function (i, pos) {
+      var o = it.options[i];
       var st = cfg.states && cfg.states[i] ? ' data-state="' + cfg.states[i] + '"' : '';
       var inp = cfg.action ? '<input type="' + (multi ? 'checkbox' : 'radio') + '" name="' + cfg.name + '" value="' + i + '" data-action="' + cfg.action + '" data-id="' + esc(it.id) + '"' + (picked(cfg.checked, i) ? ' checked' : '') + (cfg.disabled ? ' disabled' : '') + '>' : '';
       var tag = cfg.action ? 'label' : 'div';
-      h += '<li><' + tag + ' class="option"' + st + '>' + inp + '<span class="option__key" aria-hidden="true">' + optionKey(it, i) + '</span><span class="option__text">' + esc(o) + '</span>' +
+      h += '<li><' + tag + ' class="option"' + st + '>' + inp + '<span class="option__key" aria-hidden="true">' + optionKey(it, pos) + '</span><span class="option__text">' + esc(o) + '</span>' +
         (cfg.statuses && cfg.statuses[i] ? '<span class="option__status">' + cfg.statuses[i] + '</span>' : '') + '</' + tag + '></li>';
     });
     if (cfg.skip) {
@@ -4910,7 +4924,7 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
     var h = '<article class="question" id="q-' + i + '" data-index="' + i + '"' + (run.mode === 'all' && run.cur === i ? ' data-current="true"' : '') + '>';
     h += qMeta('Question ' + (i + 1) + ' of ' + run.items.length, it, isNewItem(it, seen) ? '<span class="badge badge--new">New</span>' : '');
     h += stemHTML(it);
-    h += optionsHTML(it, { name: 'q-' + id, action: 'answer', checked: run.answers[id] });
+    h += optionsHTML(it, { name: 'q-' + id, action: 'answer', checked: run.answers[id], seed: run.id });
     h += '<div class="question__tools"><button type="button" class="btn btn--sm" data-action="flag" data-id="' + esc(id) + '" aria-pressed="' + flagged + '">' + icon('flag', 'icon--sm') + (flagged ? 'Flagged' : 'Flag for review') + '</button>' +
       '<div class="cluster"><span class="segmented__caption">Confidence</span><div class="segmented" role="radiogroup" aria-label="Confidence">';
     CONF.forEach(function (c) {
@@ -5117,7 +5131,7 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
     return '<li class="meter" data-band="' + band + '"><span class="meter__label">' + label + '</span><span class="meter__track" role="img" aria-label="' + esc(p) + '%"><span class="meter__fill" style="--pct: ' + p + '"></span></span>' +
       '<span class="meter__value">' + value + '</span><span class="meter__band">' + (extra || '') + '</span></li>';
   }
-  function reviewItemHTML(r, n) {
+  function reviewItemHTML(r, n, seed) {
     var it = ITEM[r.id]; if (!it) return '';
     var sec = reveal(r.id), rs = revealStates(sec.answer, r.answer, it.options.length);
     var extra = (r.result ? '<span class="badge badge--correct">' + icon('check', 'icon--sm') + 'Correct</span>' : r.answer == null ? '<span class="badge badge--incorrect">' + icon('x', 'icon--sm') + 'Unanswered</span>' : '<span class="badge badge--incorrect">' + icon('x', 'icon--sm') + 'Incorrect</span>') +
@@ -5125,7 +5139,7 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
       (r.conf ? '<span class="badge badge--outline">' + (r.conf === 'sure' ? 'Sure' : 'Guessing') + '</span>' : '');
     var fb = r.result ? 'correct' : 'incorrect';
     return '<article class="question" id="review-' + esc(r.id) + '">' + qMeta('Question ' + n, it, extra) + stemHTML(it) +
-      optionsHTML(it, { disabled: true, states: rs.states, statuses: rs.statuses }) +
+      optionsHTML(it, { disabled: true, states: rs.states, statuses: rs.statuses, seed: seed }) +
       '<div class="feedback feedback--' + fb + '"><p class="feedback__body">' + esc(sec.explanation) + '</p><blockquote class="excerpt">' + esc(sec.source.excerpt) + '</blockquote><div>' + itemCitation(r.id) + '</div></div></article>';
   }
   VIEWS.results = function (p) {
@@ -5204,7 +5218,7 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
     var shown = 0;
     a.items.forEach(function (r, i) {
       var ok = ui.filter === 'all' || (ui.filter === 'incorrect' && !r.result) || (ui.filter === 'flagged' && r.flag) || (ui.filter === 'low' && lowConf(r));
-      if (ok) { h += reviewItemHTML(r, i + 1); shown++; }
+      if (ok) { h += reviewItemHTML(r, i + 1, a.id); shown++; }
     });
     if (!shown) h += '<div class="empty"><span class="empty__title">No ' + (ui.filter === 'low' ? 'guessed' : ui.filter) + ' questions in this attempt</span><button type="button" class="btn btn--sm" data-action="filter" data-filter="all">Show all ' + counts.all + '</button></div>';
     h += '</div></section>';
@@ -5274,7 +5288,7 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
     var rest = shuffle(items.filter(function (it) { return !fset[it.id] && !useen[it.id]; }));
     var q = onlyIds ? shuffle(items) : focus.concat(unseen, rest);
     var n = ui.practiceLen === 'all' || onlyIds ? q.length : Math.min(q.length, Number(ui.practiceLen));
-    ui.prac = { tid: tid, sub: sub || null, queue: q.slice(0, n).map(function (it) { return { id: it.id, focus: !!fset[it.id], retry: false, state: null, answer: null }; }), idx: 0, requeued: false, counted: false };
+    ui.prac = { tid: tid, sub: sub || null, queue: q.slice(0, n).map(function (it) { return { id: it.id, focus: !!fset[it.id], retry: false, state: null, answer: null }; }), idx: 0, requeued: false, counted: false, seed: 'p' + Date.now() };
     go('practice');
   }
   function practiceTitle(P) { return esc(TOPIC[P.tid] ? TOPIC[P.tid].name : 'Practice') + (P.sub ? ' · ' + esc(P.sub) : ''); }
@@ -5301,12 +5315,12 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
     var extra = (e.focus ? '<span class="badge badge--focus">' + icon('target', 'icon--sm') + 'Focus</span>' : '') + (e.retry ? '<span class="badge badge--flag">Second try</span>' : '') + '<span class="badge badge--outline">' + (isSolving(it) ? 'Solve' : 'Concept') + '</span>';
     h += '<article class="question" id="q-p">' + qMeta('Question ' + (P.idx + 1) + ' of ' + P.queue.length, it, extra) + stemHTML(it);
     if (!e.state) {
-      h += optionsHTML(it, { name: 'p-' + P.idx, action: 'panswer', skip: true, checked: e.pick });
+      h += optionsHTML(it, { name: 'p-' + P.idx, action: 'panswer', skip: true, checked: e.pick, seed: P.seed });
       // Multi-select can't answer on one click: the student ticks options, then checks.
       if (isMulti(it)) h += '<div class="question__tools"><span class="push"></span><button type="button" class="btn btn--primary" data-action="pcheck"' + (e.pick && e.pick.length ? '' : ' disabled') + '>' + icon('check', 'icon--sm') + 'Check answer</button></div>';
     } else {
       var sec = reveal(e.id), rs = revealStates(sec.answer, e.answer, it.options.length);
-      h += optionsHTML(it, { disabled: true, states: rs.states, statuses: rs.statuses });
+      h += optionsHTML(it, { disabled: true, states: rs.states, statuses: rs.statuses, seed: P.seed });
       var v = e.state === 'correct' ? ['correct', 'check', 'Correct'] : e.state === 'incorrect' ? ['incorrect', 'x', 'Not quite'] : ['skipped', 'help', 'Skipped — here’s the answer'];
       h += '<div class="feedback feedback--' + v[0] + '" role="status"><p class="feedback__verdict">' + icon(v[1]) + v[2] + '</p><p class="feedback__body">' + esc(sec.explanation) + '</p>' +
         '<blockquote class="excerpt">' + esc(sec.source.excerpt) + '</blockquote><div>' + itemCitation(e.id) + '</div></div>';
@@ -5583,24 +5597,24 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
     var t = e.target, tag = t && t.tagName;
     if ((tag === 'INPUT' && t.type !== 'radio' && t.type !== 'checkbox') || tag === 'TEXTAREA' || tag === 'SELECT') return;
     var k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
-    function choice(it) {
+    function choice(it, seed) {
       if (isBinary(it)) { var first = it.options.map(function (o) { return o.charAt(0).toLowerCase(); }); if (k === first[0] || k === '1' || k === 'a') return 0; if (k === first[1] || k === '2' || k === 'b') return 1; return -1; }
       var i = '123456'.indexOf(k); if (i < 0) i = 'abcdef'.indexOf(k);
-      return i < it.options.length ? i : -1;
+      return i < it.options.length ? optOrder(it, seed)[i] : -1;
     }
     if (ui.view === 'exam' && store.inProgress) {
       var run = store.inProgress, id = run.items[run.cur], it = ITEM[id];
       if (k === 'ArrowLeft') { e.preventDefault(); gotoIndex(run.cur - 1); return; }
       if (k === 'ArrowRight') { e.preventDefault(); gotoIndex(run.cur + 1); return; }
       if (k === 'm') { e.preventDefault(); toggleFlag(id); return; }  // M = mark; F answers False
-      var c = choice(it); if (c >= 0) { e.preventDefault(); setAnswer(id, isMulti(it) ? toggled(run.answers[id], c) : c); }
+      var c = choice(it, run.id); if (c >= 0) { e.preventDefault(); setAnswer(id, isMulti(it) ? toggled(run.answers[id], c) : c); }
     } else if (ui.view === 'practice' && ui.prac) {
       var P = ui.prac, en = P.queue[P.idx];
       if (en.state) { if (k === 'Enter' || k === 'ArrowRight') { e.preventDefault(); practiceNext(); } return; }
       if (k === 's') { e.preventDefault(); practiceAnswer('skip'); return; }
       var pit = ITEM[en.id];
       if (k === 'Enter' && isMulti(pit)) { e.preventDefault(); practiceCheck(); return; }
-      var c2 = choice(pit); if (c2 >= 0) { e.preventDefault(); if (isMulti(pit)) practicePick(c2); else practiceAnswer(c2); }
+      var c2 = choice(pit, P.seed); if (c2 >= 0) { e.preventDefault(); if (isMulti(pit)) practicePick(c2); else practiceAnswer(c2); }
     }
   });
 
