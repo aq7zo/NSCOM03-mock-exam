@@ -4728,7 +4728,7 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
 
   /* ── 5. UI state & rendering ────────────────────────────────────────── */
   var app = $('#app');
-  var ui = { view: 'home', params: {}, back: null, practiceLen: '10', filter: 'all', order: null, shuffleWithin: false, prac: null, after: null };
+  var ui = { view: 'home', params: {}, back: null, practiceLen: '10', practiceMode: 'concept', filter: 'all', order: null, shuffleWithin: false, prac: null, after: null };
   var VIEWS = {};
   function render() {
     var fn = VIEWS[ui.view] || VIEWS.home;
@@ -5225,8 +5225,12 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
     var mm = masteryMap(), seen = attemptedIds(), last = store.attempts[store.attempts.length - 1];
     var h = '<div class="page stack stack--xl">';
     h += pageHead('', 'Practice by topic', 'Quizzes are split by topic, one card each. Start a whole topic, or drill down by picking one of its subtopics on the card. Every question gives instant feedback.', BACK_BTN);
-    var len = '<span class="small strong">Questions per session</span><div class="segmented" role="radiogroup" aria-label="Session length">' +
-      [['10', '10'], ['20', '20'], ['all', 'All']].map(function (o) { return '<span class="segmented__option"><input type="radio" id="len-' + o[0] + '" name="plen" value="' + o[0] + '" data-action="plen"' + (ui.practiceLen === o[0] ? ' checked' : '') + '><label class="segmented__label" for="len-' + o[0] + '">' + o[1] + '</label></span>'; }).join('') + '</div>';
+    function seg(name, label, cur, opts) {
+      return '<span class="small strong">' + label + '</span><div class="segmented" role="radiogroup" aria-label="' + label + '">' +
+        opts.map(function (o) { return '<span class="segmented__option"><input type="radio" id="' + name + '-' + o[0] + '" name="' + name + '" value="' + o[0] + '" data-action="' + name + '"' + (cur === o[0] ? ' checked' : '') + '><label class="segmented__label" for="' + name + '-' + o[0] + '">' + o[1] + '</label></span>'; }).join('') + '</div>';
+    }
+    var len = seg('pmode', 'Question type', ui.practiceMode, [['concept', 'Concept'], ['mixed', 'Mixed'], ['solve', 'Solve']]) +
+      seg('plen', 'Questions per session', ui.practiceLen, [['10', '10'], ['20', '20'], ['all', 'All']]);
 
     var focus = TOPICS.filter(function (t) { return mm[t.id].band === 'weak' || mm[t.id].band === 'review'; })
       .sort(function (x, y) { return (mm[x.id].pct || 0) - (mm[y.id].pct || 0); });
@@ -5241,7 +5245,7 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
     return h;
   };
   function topicCard(t, mm, seen, last) {
-    var m = mm[t.id], items = BANK.filter(function (it) { return it.topic === t.id; });
+    var m = mm[t.id], items = BANK.filter(function (it) { return it.topic === t.id && inMode(it); });
     var reason = '';
     if (last) { var s = topicScore(last, t.id); if (s) reason = (s.total - s.correct) + ' of ' + s.total + ' missed in your last mock exam'; }
     var subs = (t.subtopics || []).filter(function (sub) { return items.some(function (it) { return it.subtopic === sub; }); });
@@ -5251,12 +5255,18 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
       (reason ? '<p class="small">' + reason + '</p>' : '') +
       (isNewTopic(t, mm) ? '<span><span class="badge badge--new">' + 'New topic</span></span>' : newCount ? '<span><span class="badge badge--new">' + newCount + ' new</span></span>' : '') +
       (subs.length > 1 ? '<div class="filters" role="group" aria-label="Subtopics">' + subs.map(function (sub) { return '<button type="button" class="filter" data-action="practice-sub" data-topic="' + esc(t.id) + '" data-sub="' + esc(sub) + '">' + esc(sub) + '</button>'; }).join('') + '</div>' : '') +
-      '<div class="card__foot"><button type="button" class="btn btn--primary btn--sm" data-action="practice-topic" data-topic="' + esc(t.id) + '">' + icon('play', 'icon--sm') + 'Practice topic</button></div></div>';
+      '<div class="card__foot"><button type="button" class="btn btn--primary btn--sm" data-action="practice-topic" data-topic="' + esc(t.id) + '"' + (items.length ? '' : ' disabled') + '>' + icon('play', 'icon--sm') + 'Practice topic</button></div></div>';
   }
+  // Problem-solving = computing a value. Level 'apply' matches that except for these items.
+  var SOLVE_FIX = { 't6-q08': true, 't7-q11': true, 't5-q17': false };
+  function isSolving(it) { return it.id in SOLVE_FIX ? SOLVE_FIX[it.id] : it.level === 'apply'; }
+  function inMode(it) { return ui.practiceMode === 'mixed' || (ui.practiceMode === 'solve') === isSolving(it); }
   function startPractice(tid, sub, onlyIds) {
     var flagged = latestFlags(), seen = attemptedIds();
     var items = onlyIds ? onlyIds.map(function (id) { return ITEM[id]; }).filter(Boolean)
-      : BANK.filter(function (it) { return it.topic === tid && (!sub || it.subtopic === sub); });
+      : BANK.filter(function (it) { return it.topic === tid && (!sub || it.subtopic === sub) && inMode(it); });
+    // A results-page link can name a topic with nothing in the chosen mode; practice all of it then.
+    if (!items.length) items = BANK.filter(function (it) { return it.topic === tid && (!sub || it.subtopic === sub); });
     var focus = shuffle(items.filter(function (it) { return flagged[it.concept]; }));
     var fset = {}; focus.forEach(function (it) { fset[it.id] = 1; });
     var unseen = shuffle(items.filter(function (it) { return !fset[it.id] && !seen[it.id]; }));
@@ -5288,7 +5298,7 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
       '<div class="drawer-scrim" data-action="drawer-close" hidden></div>';
 
     h += '<div class="focus__main stack">';
-    var extra = (e.focus ? '<span class="badge badge--focus">' + icon('target', 'icon--sm') + 'Focus</span>' : '') + (e.retry ? '<span class="badge badge--flag">Second try</span>' : '');
+    var extra = (e.focus ? '<span class="badge badge--focus">' + icon('target', 'icon--sm') + 'Focus</span>' : '') + (e.retry ? '<span class="badge badge--flag">Second try</span>' : '') + '<span class="badge badge--outline">' + (isSolving(it) ? 'Solve' : 'Concept') + '</span>';
     h += '<article class="question" id="q-p">' + qMeta('Question ' + (P.idx + 1) + ' of ' + P.queue.length, it, extra) + stemHTML(it);
     if (!e.state) {
       h += optionsHTML(it, { name: 'p-' + P.idx, action: 'panswer', skip: true, checked: e.pick });
@@ -5561,6 +5571,7 @@ TwgNQzQpJXEPHjJNHRQoazc/</script>
     else if (a === 'mode') { var r = store.inProgress; if (r) { r.mode = el.value; save(); render(); var q = $('#q-' + r.cur); if (q && r.mode === 'all') q.scrollIntoView({ block: 'start' }); } }
     else if (a === 'panswer') { if (el.type === 'checkbox') practicePick(Number(el.value)); else practiceAnswer(el.value); }
     else if (a === 'plen') ui.practiceLen = el.value;
+    else if (a === 'pmode') { ui.practiceMode = el.value; render(); $('#pmode-' + el.value).focus(); }
     else if (a === 'shuffle-within') ui.shuffleWithin = el.checked;
     else if (el.id === 'import-file' && el.files && el.files[0]) importProgress(el.files[0]);
   });
